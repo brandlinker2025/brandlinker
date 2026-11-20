@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact — BrandLinker Headquarters</title>
+  <meta name="description" content="Connect with BrandLinker Headquarters for Dubai & GCC brand entry, real estate projects, or partnerships with Cheap Ticket Finder, Brand Linker Spark, and SheRides." />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body>
+  <canvas id="vfx-canvas" aria-hidden="true"></canvas>
+  <div class="grain-overlay" aria-hidden="true"></div>
+  <div class="ambient-bloom ambient-bloom--top" aria-hidden="true"></div>
+  <div class="ambient-bloom ambient-bloom--bottom" aria-hidden="true"></div>
+
+  <!-- Navigation -->
+  <header class="site-header">
+    <div class="container">
+      <nav class="nav-shell" aria-label="Primary">
+        <a href="index.html" class="brand-mark" aria-label="BrandLinker Headquarters Home">
+          <span class="brand-mark__icon">B</span>
+          <span class="brand-mark__text">
+            <span class="brand-mark__name">BrandLinker</span>
+            <span class="brand-mark__sub">Headquarters</span>
+          </span>
+        </a>
+
+        <ul class="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="brands.html">Brands</a></li>
+          <li><a href="contact.html" class="is-active">Contact</a></li>
+        </ul>
+
+        <div class="nav-actions">
+          <a href="brands.html" class="btn-glass btn-glass--sm">
+            <span>View Brands</span>
+          </a>
+          <button class="nav-toggle" type="button" aria-label="Toggle Menu" aria-expanded="false">
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Mobile Drawer -->
+  <div class="mobile-drawer" aria-label="Mobile Navigation">
+    <ul class="mobile-drawer__links">
+      <li><a href="index.html"><span>01</span> Home</a></li>
+      <li><a href="about.html"><span>02</span> About</a></li>
+      <li><a href="brands.html"><span>03</span> Brands</a></li>
+      <li><a href="contact.html" class="is-active"><span>04</span> Contact</a></li>
+    </ul>
+    <div>
+      <a href="brands.html" class="btn-glass btn-glass--accent">
+        <span>Explore Our 4 Brands</span>
+        <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <main>
+    <!-- Page Hero -->
+    <section class="page-hero">
+      <div class="container">
+        <div class="page-hero__inner" data-reveal>
+          <span class="eyebrow">Direct Headquarters Desk</span>
+          <h1 class="display-title">Start a <em>Conversation</em> With BrandLinker.</h1>
+          <p class="lead">
+            Reach our leadership and venture desks for GCC brand entry, real estate collaborations, travel and commerce partnerships, or community initiatives across our four brands.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="section">
+      <div class="container">
+        <div class="contact-grid">
+          <!-- Left: Desks -->
+          <div data-reveal>
+            <span class="eyebrow">Regional &amp; Brand Desks</span>
+            <h2 class="section-title" style="margin-top: 12px;">Direct <em>Channels</em>.</h2>
+
+            <div class="desk-list">
+              <div class="desk-card">
+                <div class="desk-card__label">Central Headquarters</div>
+                <h3 class="desk-card__title">BrandLinker Executive Desk</h3>
+                <p class="desk-card__detail">Strategic partnerships, corporate inquiries, and multi-brand collaborations.</p>
+                <a href="mailto:hq@brandlinker.com" class="desk-card__link">hq@brandlinker.com</a>
+              </div>
+
+              <div class="desk-card">
+                <div class="desk-card__label">Middle East &amp; Gulf</div>
+                <h3 class="desk-card__title">Brand Linker Dubai</h3>
+                <p class="desk-card__detail">Brand entry, distribution, localization, and real estate projects across Dubai &amp; the GCC.</p>
+                <a href="mailto:dubai@brandlinker.com" class="desk-card__link">dubai@brandlinker.com</a>
+              </div>
+
+              <div class="desk-card">
+                <div class="desk-card__label">Bangladesh Mobility</div>
+                <h3 class="desk-card__title">SheRides</h3>
+                <p class="desk-card__detail">Women-only ride sharing partnerships, rider safety initiatives, and community programs.</p>
+                <a href="https://sherides.online" target="_blank" rel="noopener noreferrer" class="desk-card__link">sherides.online &#8599;</a>
+              </div>
+
+              <div class="desk-card">
+                <div class="desk-card__label">Travel &amp; Global Commerce</div>
+                <h3 class="desk-card__title">Cheap Ticket Finder &amp; Spark</h3>
+                <p class="desk-card__detail">Travel inventory integrations, curated product suppliers, and global fulfillment partners.</p>
+                <a href="mailto:ventures@brandlinker.com" class="desk-card__link">ventures@brandlinker.com</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Glassmorphic Inquiry Form -->
+          <div class="form-panel" data-reveal data-reveal-delay="1">
+            <span class="eyebrow" style="margin-bottom: 10px;">Send a Brief</span>
+            <h2 class="section-title" style="font-size: clamp(1.75rem, 2.8vw, 2.35rem); margin-bottom: 24px;">Headquarters <em>Inquiry</em></h2>
+
+            <form id="hq-contact-form" novalidate>
+              <div class="form-grid">
+                <div class="field">
+                  <label for="inquiry-name">Full Name</label>
+                  <input id="inquiry-name" name="name" type="text" placeholder="Your name" required />
+                </div>
+
+                <div class="field">
+                  <label for="inquiry-email">Work Email</label>
+                  <input id="inquiry-email" name="email" type="email" placeholder="name@company.com" required />
+                </div>
+
+                <div class="field">
+                  <label for="inquiry-org">Company / Organization</label>
+                  <input id="inquiry-org" name="organization" type="text" placeholder="Optional" />
+                </div>
+
+                <div class="field">
+                  <label for="inquiry-brand">Brand or Desk</label>
+                  <select id="inquiry-brand" name="brand" required>
+                    <option value="hq">BrandLinker Headquarters (General)</option>
+                    <option value="ctf">Cheap Ticket Finder — Travel Platform</option>
+                    <option value="dubai">Brand Linker Dubai — GCC &amp; Real Estate</option>
+                    <option value="spark">Brand Linker Spark — Premium Dropshipping</option>
+                    <option value="sherides">SheRides — Women-Only Mobility (Bangladesh)</option>
+                  </select>
+                </div>
+
+                <div class="field field--full">
+                  <label for="inquiry-message">Project or Partnership Details</label>
+                  <textarea id="inquiry-message" name="message" placeholder="Tell us about your brand, market goals, or how you would like to collaborate with BrandLinker..." required></textarea>
+                </div>
+              </div>
+
+              <div class="form-footer">
+                <span class="form-note">Typical response time: within 1 business day.</span>
+                <button type="submit" class="btn-glass btn-glass--accent">
+                  <span>Send to Headquarters</span>
+                  <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+                </button>
+              </div>
+
+              <div id="form-status" class="form-status" role="status" aria-live="polite"></div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <a href="index.html" class="brand-mark">
+            <span class="brand-mark__icon">B</span>
+            <span class="brand-mark__text">
+              <span class="brand-mark__name">BrandLinker</span>
+              <span class="brand-mark__sub">Headquarters</span>
+            </span>
+          </a>
+          <p class="footer-desc">
+            The central luxury agency and venture headquarters operating across travel, Dubai &amp; GCC market entry, curated global commerce, and safe mobility.
+          </p>
+        </div>
+
+        <div>
+          <h4 class="footer-col__title">Navigation</h4>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About HQ</a></li>
+            <li><a href="brands.html">Our Brands</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-col__title">Our 4 Brands</h4>
+          <ul class="footer-links">
+            <li><a href="brands.html#cheap-ticket-finder">Cheap Ticket Finder</a></li>
+            <li><a href="brands.html#brand-linker-dubai">Brand Linker Dubai</a></li>
+            <li><a href="brands.html#brand-linker-spark">Brand Linker Spark</a></li>
+            <li><a href="https://sherides.online" target="_blank" rel="noopener noreferrer">SheRides (sherides.online) &#8599;</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-col__title">Headquarters</h4>
+          <ul class="footer-links">
+            <li><a href="contact.html?brand=dubai">Dubai &amp; GCC Desk</a></li>
+            <li><a href="contact.html?brand=sherides">Dhaka, Bangladesh Desk</a></li>
+            <li><a href="contact.html">hq@brandlinker.com</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>&copy; 2026 BrandLinker Headquarters. All rights reserved.</span>
+        <span>Dubai &middot; Dhaka &middot; Global</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/vfx.js" defer></script>
+  <script src="assets/js/app.js" defer></script>
+</body>
+</html>

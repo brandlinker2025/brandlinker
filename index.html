@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BrandLinker — Global Venture &amp; Brand Headquarters</title>
+  <meta name="description" content="BrandLinker is the central headquarters behind Cheap Ticket Finder, Brand Linker Dubai, Brand Linker Spark, and SheRides — building and scaling high-trust ventures across borders." />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body>
+  <canvas id="vfx-canvas" aria-hidden="true"></canvas>
+  <div class="grain-overlay" aria-hidden="true"></div>
+  <div class="ambient-bloom ambient-bloom--top" aria-hidden="true"></div>
+  <div class="ambient-bloom ambient-bloom--bottom" aria-hidden="true"></div>
+
+  <!-- Navigation -->
+  <header class="site-header">
+    <div class="container">
+      <nav class="nav-shell" aria-label="Primary">
+        <a href="index.html" class="brand-mark" aria-label="BrandLinker Headquarters Home">
+          <span class="brand-mark__icon">B</span>
+          <span class="brand-mark__text">
+            <span class="brand-mark__name">BrandLinker</span>
+            <span class="brand-mark__sub">Headquarters</span>
+          </span>
+        </a>
+
+        <ul class="nav-links">
+          <li><a href="index.html" class="is-active">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="brands.html">Brands</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+
+        <div class="nav-actions">
+          <a href="contact.html" class="btn-glass btn-glass--accent btn-glass--sm">
+            <span>Partner With HQ</span>
+            <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+          </a>
+          <button class="nav-toggle" type="button" aria-label="Toggle Menu" aria-expanded="false">
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Mobile Drawer -->
+  <div class="mobile-drawer" aria-label="Mobile Navigation">
+    <ul class="mobile-drawer__links">
+      <li><a href="index.html" class="is-active"><span>01</span> Home</a></li>
+      <li><a href="about.html"><span>02</span> About</a></li>
+      <li><a href="brands.html"><span>03</span> Brands</a></li>
+      <li><a href="contact.html"><span>04</span> Contact</a></li>
+    </ul>
+    <div>
+      <a href="contact.html" class="btn-glass btn-glass--accent">
+        <span>Partner With HQ</span>
+        <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <main>
+    <!-- Cinematic Hero -->
+    <section class="hero">
+      <div class="hero__media" aria-hidden="true">
+        <img src="assets/images/hero-hq.jpg" alt="" />
+      </div>
+      <div class="hero__vignette" aria-hidden="true"></div>
+
+      <div class="container">
+        <div class="hero__content">
+          <div class="hero__badge" data-reveal>
+            <span class="hero__badge-dot"></span>
+            <span>BrandLinker Headquarters &middot; Dubai &middot; Dhaka &middot; Global</span>
+          </div>
+
+          <h1 class="display-title hero__title" data-reveal data-reveal-delay="1">
+            Crafting <em>Enduring</em> Ventures Across Borders.
+          </h1>
+
+          <p class="lead hero__desc" data-reveal data-reveal-delay="2">
+            BrandLinker is the central agency and holding house uniting travel technology, GCC market entry &amp; real estate, curated global commerce, and women-first urban mobility under one standard of luxury execution.
+          </p>
+
+          <div class="hero__actions" data-reveal data-reveal-delay="3">
+            <a href="brands.html" class="btn-glass btn-glass--accent">
+              <span>Explore Our 4 Brands</span>
+              <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+            </a>
+            <a href="about.html" class="btn-glass">
+              <span>Inside BrandLinker HQ</span>
+            </a>
+          </div>
+
+          <div class="hero__meta" data-reveal data-reveal-delay="4">
+            <div class="hero__meta-item">
+              <strong>04</strong>
+              <span>Flagship Brands</span>
+            </div>
+            <div class="hero__meta-item">
+              <strong>GCC &amp; Asia</strong>
+              <span>Regional Presence</span>
+            </div>
+            <div class="hero__meta-item">
+              <strong>Global</strong>
+              <span>Commerce &amp; Travel</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Portfolio Section: The 4 Brands -->
+    <section class="section" id="portfolio">
+      <div class="container">
+        <div class="section-head">
+          <div class="section-head__left" data-reveal>
+            <span class="eyebrow">Portfolio Houses</span>
+            <h2 class="section-title">Four Distinct Brands.<br /><em>One Central Headquarters.</em></h2>
+          </div>
+          <p class="section-head__right" data-reveal data-reveal-delay="1">
+            Each venture operates with dedicated focus in its sector while drawing strategy, brand architecture, distribution, and operational rigor from BrandLinker HQ.
+          </p>
+        </div>
+
+        <div class="brands-grid">
+          <!-- Brand 1: Cheap Ticket Finder -->
+          <article class="brand-card" data-reveal>
+            <div class="brand-card__media">
+              <img src="assets/images/brand-ctf.jpg" alt="Cheap Ticket Finder — luxury aviation wing above warm twilight clouds" loading="lazy" />
+              <div class="brand-card__top-meta">
+                <span class="glass-pill">Travel Platform</span>
+                <span class="brand-index">01</span>
+              </div>
+            </div>
+            <div class="brand-card__body">
+              <h3 class="brand-card__title">Cheap Ticket Finder</h3>
+              <p class="brand-card__desc">
+                An online travel booking platform built for seamless discovery and booking of flights, hotels, and tickets — pairing intelligent fare comparison with a refined, reliable traveler experience.
+              </p>
+              <div class="brand-card__tags">
+                <span class="tag">Flights</span>
+                <span class="tag">Hotels</span>
+                <span class="tag">Tickets</span>
+                <span class="tag">Global Routes</span>
+              </div>
+              <div class="brand-card__footer">
+                <span class="brand-card__region">Worldwide Travel</span>
+                <a href="brands.html#cheap-ticket-finder" class="btn-glass btn-glass--sm">
+                  <span>View Brand</span>
+                  <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Brand 2: Brand Linker Dubai -->
+          <article class="brand-card" data-reveal data-reveal-delay="1">
+            <div class="brand-card__media">
+              <img src="assets/images/brand-dubai.jpg" alt="Brand Linker Dubai — Dubai luxury skyline illuminated in warm twilight" loading="lazy" />
+              <div class="brand-card__top-meta">
+                <span class="glass-pill">GCC &amp; Real Estate</span>
+                <span class="brand-index">02</span>
+              </div>
+            </div>
+            <div class="brand-card__body">
+              <h3 class="brand-card__title">Brand Linker Dubai</h3>
+              <p class="brand-card__desc">
+                Strategic brand entry, regional distribution, cultural localization, and real estate related projects across Dubai and the wider GCC — connecting ambitious brands with the Middle East&rsquo;s premier markets.
+              </p>
+              <div class="brand-card__tags">
+                <span class="tag">Brand Entry</span>
+                <span class="tag">Distribution</span>
+                <span class="tag">Localization</span>
+                <span class="tag">Real Estate</span>
+              </div>
+              <div class="brand-card__footer">
+                <span class="brand-card__region">Dubai &amp; GCC</span>
+                <a href="brands.html#brand-linker-dubai" class="btn-glass btn-glass--sm">
+                  <span>View Brand</span>
+                  <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Brand 3: Brand Linker Spark -->
+          <article class="brand-card" data-reveal>
+            <div class="brand-card__media">
+              <img src="assets/images/brand-spark.jpg" alt="Brand Linker Spark — curated luxury lifestyle products under warm studio lighting" loading="lazy" />
+              <div class="brand-card__top-meta">
+                <span class="glass-pill">Curated Commerce</span>
+                <span class="brand-index">03</span>
+              </div>
+            </div>
+            <div class="brand-card__body">
+              <h3 class="brand-card__title">Brand Linker Spark</h3>
+              <p class="brand-card__desc">
+                A premium dropshipping store featuring hand-selected products and dependable global shipping — elevating direct-to-consumer commerce through disciplined curation and luxury brand presentation.
+              </p>
+              <div class="brand-card__tags">
+                <span class="tag">Selected Products</span>
+                <span class="tag">Global Shipping</span>
+                <span class="tag">Premium D2C</span>
+              </div>
+              <div class="brand-card__footer">
+                <span class="brand-card__region">International E-Commerce</span>
+                <a href="brands.html#brand-linker-spark" class="btn-glass btn-glass--sm">
+                  <span>View Brand</span>
+                  <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Brand 4: SheRides -->
+          <article class="brand-card" data-reveal data-reveal-delay="1">
+            <div class="brand-card__media">
+              <img src="assets/images/brand-sherides.jpg" alt="SheRides — confident South Asian woman traveling safely in a modern car at evening twilight" loading="lazy" />
+              <div class="brand-card__top-meta">
+                <span class="glass-pill">Women-Only Mobility</span>
+                <span class="brand-index">04</span>
+              </div>
+            </div>
+            <div class="brand-card__body">
+              <h3 class="brand-card__title">SheRides</h3>
+              <a href="https://sherides.online" target="_blank" rel="noopener noreferrer" class="brand-card__domain">sherides.online &#8599;</a>
+              <p class="brand-card__desc">
+                A dedicated women-only ride sharing service in Bangladesh built around safety, trust, and community for female riders — empowering everyday urban mobility with dignity and peace of mind.
+              </p>
+              <div class="brand-card__tags">
+                <span class="tag">Women-Only</span>
+                <span class="tag">Safety First</span>
+                <span class="tag">Community</span>
+                <span class="tag">Bangladesh</span>
+              </div>
+              <div class="brand-card__footer">
+                <span class="brand-card__region">Bangladesh</span>
+                <a href="brands.html#sherides" class="btn-glass btn-glass--sm">
+                  <span>View Brand</span>
+                  <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+                </a>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Agency & HQ Capabilities -->
+    <section class="section section--tight">
+      <div class="container">
+        <div class="section-head">
+          <div class="section-head__left" data-reveal>
+            <span class="eyebrow">The Headquarters Advantage</span>
+            <h2 class="section-title">How BrandLinker <em>Builds &amp; Scales</em>.</h2>
+          </div>
+          <p class="section-head__right" data-reveal data-reveal-delay="1">
+            We operate at the intersection of brand craft, commercial distribution, and cross-border execution.
+          </p>
+        </div>
+
+        <div class="pillars-grid">
+          <div class="pillar-card" data-reveal>
+            <span class="pillar-card__num">01</span>
+            <h3 class="pillar-card__title">Brand Architecture</h3>
+            <p class="pillar-card__text">
+              Every venture is positioned with clarity, editorial visual language, and category authority from day one — built to earn immediate trust in competitive markets.
+            </p>
+          </div>
+          <div class="pillar-card" data-reveal data-reveal-delay="1">
+            <span class="pillar-card__num">02</span>
+            <h3 class="pillar-card__title">Cross-Border Execution</h3>
+            <p class="pillar-card__text">
+              From Dubai &amp; GCC distribution and real estate partnerships to Bangladesh mobility networks and global e-commerce fulfillment, we localize operations to fit each market.
+            </p>
+          </div>
+          <div class="pillar-card" data-reveal data-reveal-delay="2">
+            <span class="pillar-card__num">03</span>
+            <h3 class="pillar-card__title">Commercial Resilience</h3>
+            <p class="pillar-card__text">
+              We focus on real demand — travel, property, curated goods, and safe urban transit — pairing disciplined unit economics with long-term brand equity.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Closing CTA Banner -->
+    <section class="section section--tight">
+      <div class="container">
+        <div class="cta-banner" data-reveal>
+          <div class="cta-banner__copy">
+            <span class="eyebrow">Work With BrandLinker HQ</span>
+            <h2 class="section-title">Ready to Expand, Distribute, or <em>Collaborate</em>?</h2>
+            <p class="lead">
+              Whether you are entering Dubai &amp; the GCC, partnering with one of our four flagship ventures, or exploring strategic collaboration with headquarters, our desk is open.
+            </p>
+          </div>
+          <div class="cta-banner__actions">
+            <a href="contact.html" class="btn-glass btn-glass--accent">
+              <span>Contact Headquarters</span>
+              <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+            </a>
+            <a href="brands.html" class="btn-glass">
+              <span>Explore Portfolio</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <a href="index.html" class="brand-mark">
+            <span class="brand-mark__icon">B</span>
+            <span class="brand-mark__text">
+              <span class="brand-mark__name">BrandLinker</span>
+              <span class="brand-mark__sub">Headquarters</span>
+            </span>
+          </a>
+          <p class="footer-desc">
+            The central luxury agency and venture headquarters operating across travel, Dubai &amp; GCC market entry, curated global commerce, and safe mobility.
+          </p>
+        </div>
+
+        <div>
+          <h4 class="footer-col__title">Navigation</h4>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About HQ</a></li>
+            <li><a href="brands.html">Our Brands</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-col__title">Our 4 Brands</h4>
+          <ul class="footer-links">
+            <li><a href="brands.html#cheap-ticket-finder">Cheap Ticket Finder</a></li>
+            <li><a href="brands.html#brand-linker-dubai">Brand Linker Dubai</a></li>
+            <li><a href="brands.html#brand-linker-spark">Brand Linker Spark</a></li>
+            <li><a href="https://sherides.online" target="_blank" rel="noopener noreferrer">SheRides (sherides.online) &#8599;</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-col__title">Headquarters</h4>
+          <ul class="footer-links">
+            <li><a href="contact.html?brand=dubai">Dubai &amp; GCC Desk</a></li>
+            <li><a href="contact.html?brand=sherides">Dhaka, Bangladesh Desk</a></li>
+            <li><a href="contact.html">hq@brandlinker.com</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>&copy; 2026 BrandLinker Headquarters. All rights reserved.</span>
+        <span>Dubai &middot; Dhaka &middot; Global</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/vfx.js" defer></script>
+  <script src="assets/js/app.js" defer></script>
+</body>
+</html>
