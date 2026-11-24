@@ -1579,3 +1579,12 @@ button, input, textarea, select {
     display: none;
   }
 }
+
+.brand-mark__logo {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: block;
+  flex: none;
+  box-shadow: 0 0 0 1px rgba(196, 138, 90, 0.42);
+}

@@ -1,0 +1,14 @@
+# BrandLinker
+
+> BrandLinker (https://www.brandlinkerbd.com/) is a venture and brand headquarters founded by RS Lina in Dhaka, Bangladesh. Slogan: Brands Connect Opportunities. It runs brands across travel, Dubai property, travel commerce and safe mobility.
+
+## Brands
+- [Cheap Ticket Finder](https://cheapticketfinder.site/): Cheap flight search for travellers in Bangladesh
+- [BrandLinker Dubai](https://brandlinkerdubai.com/): Dubai off-plan property explained in Bangla and English
+- [BrandLinker Spark](https://www.brandlinkerspark.com/): Travel gear: adapters, power banks, luggage scales
+- [SheRides](https://sherides.online/): Women-only ride sharing in Bangladesh
+
+## Pages
+- [About](https://www.brandlinkerbd.com/about.html)
+- [Our brands](https://www.brandlinkerbd.com/brands.html)
+- [Contact](https://www.brandlinkerbd.com/contact.html)
