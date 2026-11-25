@@ -186,13 +186,15 @@ function testBusinessModules() {
   assert.equal(Math.round(targetPrice * 100) / 100, 38.57);
   assert.equal(Math.round(unitProfit * 100) / 100, 25.07);
 
-  // Dubai property commission split verification
+  // Dubai property commission terms verification (verified partner agreement rate + statutory UAE VAT)
   const propValue = 5000000;
-  const commissionRate = 2.5;
+  const commissionRate = 2.5; // Sobha channel partner agreement base
   const grossComm = (propValue * commissionRate) / 100; // 125,000 AED
-  const netPlatformShare = grossComm * 0.7; // 87,500 AED
+  const uaeVat = grossComm * 0.05; // 6,250 AED
+  const totalInvoice = grossComm + uaeVat; // 131,250 AED
   assert.equal(grossComm, 125000);
-  assert.equal(netPlatformShare, 87500);
+  assert.equal(uaeVat, 6250);
+  assert.equal(totalInvoice, 131250);
 }
 
 async function runAll() {

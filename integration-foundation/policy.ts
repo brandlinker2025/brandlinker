@@ -5,15 +5,15 @@ export type Role = "admin" | "manager" | "partner" | "auditor";
 
 export type Provider = {
   id: string;
-  name: string;
+  name?: string;
   enabled: boolean;
   healthy: boolean;
   free: boolean;
   remaining: number;
   confidentialAllowed: boolean;
-  rateLimitRPM: number;
-  rateLimitRPD: number;
-  models: readonly string[];
+  rateLimitRPM?: number;
+  rateLimitRPD?: number;
+  models?: readonly string[];
   latencyMs?: number;
   lastChecked?: string;
   errorCount?: number;

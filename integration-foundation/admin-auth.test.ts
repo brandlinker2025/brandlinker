@@ -1,0 +1,10 @@
+import assert from "node:assert/strict";
+import {authorizeBearer,verifyAdminToken} from "./admin-auth";
+const token="a".repeat(40);
+assert.equal(verifyAdminToken(token,token),true);
+assert.equal(verifyAdminToken(token,undefined),false);
+assert.equal(verifyAdminToken("short","short"),false);
+assert.equal(verifyAdminToken("b".repeat(40),token),false);
+assert.equal(authorizeBearer("Bearer "+token,token),true);
+assert.equal(authorizeBearer(token,token),false);
+assert.equal(authorizeBearer(null,token),false);

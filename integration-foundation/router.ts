@@ -12,8 +12,8 @@ export type Adapter = {
 };
 
 export type Execution =
-  | { status: "succeeded"; providerId: string; output: string; latencyMs: number }
-  | { status: "unavailable"; attempted: string[]; reason?: string };
+  | { status: "succeeded"; providerId: string; output: string }
+  | { status: "unavailable"; attempted: string[] };
 
 // In-memory health and quota monitor for real-time dashboard
 const providerStats: Map<
@@ -62,28 +62,7 @@ export async function executeFree(
     request.confidential
   );
 
-  if (eligible.length === 0) {
-    return {
-      status: "unavailable",
-      attempted,
-      reason: request.confidential
-        ? "Confidential requests require an eligible private provider (e.g. Local Ollama) to prevent public data exposure."
-        : "No healthy free-only AI providers currently configured or within quota.",
-    };
-  }
-
-  // Sort: preferred provider first, then by remaining quota / latency
-  const sortedEligible = [...eligible].sort((a, b) => {
-    if (request.preferredProviderId) {
-      if (a.id === request.preferredProviderId) return -1;
-      if (b.id === request.preferredProviderId) return 1;
-    }
-    const statsA = getProviderStats(a.id);
-    const statsB = getProviderStats(b.id);
-    return statsA.failureCount - statsB.failureCount;
-  });
-
-  for (const provider of sortedEligible) {
+  for (const provider of eligible) {
     if (signal.aborted) throw new Error("Cancelled");
     const adapter = adapters.find((a) => a.provider.id === provider.id);
     if (!adapter) continue;
@@ -108,16 +87,14 @@ export async function executeFree(
           status: "succeeded",
           providerId: provider.id,
           output: output.trim(),
-          latencyMs,
         };
       }
-    } catch (err: unknown) {
+    } catch {
       const latencyMs = Date.now() - startTime;
       const stats = getProviderStats(provider.id);
       stats.failureCount += 1;
       stats.lastLatencyMs = latencyMs;
       stats.lastSeen = new Date().toISOString();
-      stats.lastError = err instanceof Error ? err.message : String(err);
       providerStats.set(provider.id, stats);
 
       if (signal.aborted) throw new Error("Cancelled");
@@ -127,6 +104,5 @@ export async function executeFree(
   return {
     status: "unavailable",
     attempted,
-    reason: "All attempted free-only providers failed or timed out. Closed-fail policy prevented paid fallback.",
   };
 }
