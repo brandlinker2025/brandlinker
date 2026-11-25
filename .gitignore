@@ -3,3 +3,8 @@ Thumbs.db
 .vercel
 node_modules/
 *.log
+brandlinker-video-studio/
+_deploy_studio/
+_deploy_spark/
+scratch/
+brandlinker-spark/
