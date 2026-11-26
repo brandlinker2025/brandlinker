@@ -64,8 +64,8 @@ CREATE POLICY "dashboard_readonly_select_audit" ON public.bl_audit
 CREATE OR REPLACE FUNCTION public.get_dashboard_counts()
 RETURNS json
 LANGUAGE sql
-SECURITY DEFINER
-SET search_path = public
+SECURITY INVOKER
+SET search_path = ''
 AS $$
   SELECT json_build_object(
     'leadsCount', (SELECT count(*) FROM public.bl_leads),
@@ -76,4 +76,5 @@ AS $$
   );
 $$;
 
+REVOKE ALL ON FUNCTION public.get_dashboard_counts() FROM PUBLIC, anon, authenticated, service_role;
 GRANT EXECUTE ON FUNCTION public.get_dashboard_counts() TO bl_dashboard_readonly;
