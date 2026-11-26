@@ -188,6 +188,16 @@
     .auth-btn:hover {
       background: rgba(45, 212, 191, 0.3);
     }
+    .alert-banner {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #fca5a5;
+      padding: 0.85rem 1.25rem;
+      border-radius: 8px;
+      margin-bottom: 1.5rem;
+      font-size: 0.9rem;
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -210,6 +220,11 @@
   </header>
 
   <main class="dash-container">
+    <!-- Critical Disconnect Banner -->
+    <div id="db-alert-banner" class="alert-banner">
+      <strong>Database Disconnected (HTTP 503):</strong> The central Supabase database (<code>enahlkxdplntriipabiu</code>) is currently unreachable or missing server credentials (<span id="missing-env-text">BL_SUPABASE_SERVICE_KEY</span>). Metrics and CRM records are strictly hidden to prevent misleading data.
+    </div>
+
     <!-- Row 1: Executive Business Health & KPIs (Dynamic From API) -->
     <div class="metrics-grid">
       <div class="metric-card">
@@ -219,18 +234,18 @@
       </div>
       <div class="metric-card">
         <div class="metric-title">Live CRM Leads</div>
-        <div id="metric-leads-val" class="metric-value">0</div>
-        <div class="metric-sub">Actual Database Records</div>
+        <div id="metric-leads-val" class="metric-value">Unavailable</div>
+        <div id="metric-leads-sub" class="metric-sub" style="color: var(--text-muted);">Database Required</div>
       </div>
       <div class="metric-card">
         <div class="metric-title">Durable Jobs</div>
-        <div id="metric-jobs-val" class="metric-value">0</div>
-        <div class="metric-sub">bl_jobs Active State</div>
+        <div id="metric-jobs-val" class="metric-value">Unavailable</div>
+        <div id="metric-jobs-sub" class="metric-sub" style="color: var(--text-muted);">Database Required</div>
       </div>
       <div class="metric-card">
         <div class="metric-title">Signed Agreements</div>
-        <div id="metric-agreements-val" class="metric-value">0</div>
-        <div class="metric-sub">Verified Evidence Only</div>
+        <div id="metric-agreements-val" class="metric-value">Unavailable</div>
+        <div id="metric-agreements-sub" class="metric-sub" style="color: var(--text-muted);">Database Required</div>
       </div>
     </div>
 
@@ -239,7 +254,7 @@
       <div class="panel">
         <div class="panel-header">
           <div class="panel-title">Central CRM &amp; Multi-Brand Leads</div>
-          <span id="crm-status-pill" class="status-pill status-active">Live API Connected</span>
+          <span id="crm-status-pill" class="status-pill status-unconfigured">Database Disconnected</span>
         </div>
         <div id="leads-container">
           <table class="data-table">
@@ -257,7 +272,7 @@
             </tbody>
           </table>
           <div id="leads-empty" class="empty-state">
-            No CRM leads found in central database (Zero simulated records).
+            Database Disconnected: Live CRM leads cannot be verified until the database connection is restored.
           </div>
         </div>
       </div>
@@ -289,21 +304,21 @@
           <thead>
             <tr>
               <th>Supplier</th>
-              <th>API Status</th>
-              <th>Shipping Verification</th>
+              <th>Config / Live Status</th>
+              <th>Shipping Classification</th>
               <th>Order Gating</th>
             </tr>
           </thead>
           <tbody id="suppliers-tbody">
             <tr>
               <td>CJdropshipping</td>
-              <td><span class="status-pill status-unconfigured">Unconfigured</span></td>
+              <td><span id="cj-status-pill" class="status-pill status-unconfigured">Unconfigured</span></td>
               <td>Estimated Matrix Only (Not Verified Quotes)</td>
               <td>Human Signature Required</td>
             </tr>
             <tr>
               <td>AliExpress</td>
-              <td><span class="status-pill status-unconfigured">Unconfigured</span></td>
+              <td><span id="ali-status-pill" class="status-pill status-unconfigured">Unconfigured</span></td>
               <td>Estimated Matrix Only (Not Verified Quotes)</td>
               <td>Human Signature Required</td>
             </tr>
@@ -335,16 +350,18 @@
     async function loadDashboardData() {
       const syncText = document.getElementById("sync-status-text");
       const syncPill = document.getElementById("sync-pill");
+      const dbBanner = document.getElementById("db-alert-banner");
+      const crmStatusPill = document.getElementById("crm-status-pill");
       const leadsEmpty = document.getElementById("leads-empty");
       const leadsTbody = document.getElementById("leads-tbody");
       const platformsVal = document.getElementById("metric-platforms-val");
-      const platformsSub = document.getElementById("metric-platforms-sub");
+      const leadsVal = document.getElementById("metric-leads-val");
+      const jobsVal = document.getElementById("metric-jobs-val");
+      const agreementsVal = document.getElementById("metric-agreements-val");
       const supportingContainer = document.getElementById("supporting-container");
 
-      // Default visual fallbacks
-      leadsEmpty.style.display = "block";
+      // Initial fallbacks
       platformsVal.textContent = "5 Platforms";
-      platformsSub.textContent = "BD, Dubai, Spark, Studio, RSLina";
 
       supportingContainer.innerHTML = `
         <div class="agent-pill">
@@ -404,43 +421,58 @@
           syncText.textContent = "Owner Authentication Required";
           syncPill.className = "status-pill status-alert";
           syncPill.textContent = "Locked (Fail-Closed)";
+          dbBanner.style.display = "none";
           return;
         }
 
-        const data = await res.json();
-
-        // Update database connection status
-        if (data.database && data.database.connected) {
-          syncText.textContent = "Supabase Live Connected";
-          syncPill.className = "status-pill status-active";
-          syncPill.textContent = "Connected";
-        } else {
-          syncText.textContent = "Live API Verified: " + (data.database.source || "Unconfigured");
-          syncPill.className = "status-pill status-active";
-          syncPill.textContent = "API Synced";
-        }
-
-        // Update metrics from actual API response
-        platformsVal.textContent = `${data.platforms?.length || 5} Platforms`;
-        document.getElementById("metric-leads-val").textContent = data.metrics?.leadsCount ?? 0;
-        document.getElementById("metric-jobs-val").textContent = data.metrics?.jobsCount ?? 0;
-        document.getElementById("metric-agreements-val").textContent = data.metrics?.agreementsCount ?? 0;
-
-        // Populate Leads Table or Empty State
-        if (data.leads && data.leads.length > 0) {
-          leadsEmpty.style.display = "none";
-          leadsTbody.innerHTML = data.leads.map(lead => `
-            <tr>
-              <td>${lead.name || lead.id}</td>
-              <td>${lead.platformId}</td>
-              <td><span class="status-pill status-active">${lead.stage}</span></td>
-              <td>${lead.createdAt}</td>
-              <td>${lead.consentAt ? 'Verified' : 'Pending'}</td>
-            </tr>
-          `).join("");
-        } else {
+        // Handle HTTP 503: Database Disconnected
+        if (res.status === 503) {
+          const errData = await res.json();
+          syncText.textContent = "Database Disconnected (HTTP 503)";
+          syncPill.className = "status-pill status-alert";
+          syncPill.textContent = "Database Disconnected";
+          dbBanner.style.display = "block";
+          crmStatusPill.className = "status-pill status-alert";
+          crmStatusPill.textContent = "Database Disconnected";
+          
+          leadsVal.textContent = "Unavailable";
+          jobsVal.textContent = "Unavailable";
+          agreementsVal.textContent = "Unavailable";
           leadsTbody.innerHTML = "";
           leadsEmpty.style.display = "block";
+          leadsEmpty.textContent = "Database Disconnected: Live CRM leads cannot be displayed.";
+          return;
+        }
+
+        if (res.status === 200) {
+          const data = await res.json();
+          dbBanner.style.display = "none";
+          syncText.textContent = "Supabase Live Connected";
+          syncPill.className = "status-pill status-active";
+          syncPill.textContent = "Database Connected";
+          crmStatusPill.className = "status-pill status-active";
+          crmStatusPill.textContent = "Live Connected";
+
+          leadsVal.textContent = data.metrics?.leadsCount ?? 0;
+          jobsVal.textContent = data.metrics?.jobsCount ?? 0;
+          agreementsVal.textContent = data.metrics?.agreementsCount ?? 0;
+
+          if (data.leads && data.leads.length > 0) {
+            leadsEmpty.style.display = "none";
+            leadsTbody.innerHTML = data.leads.map(lead => `
+              <tr>
+                <td>${lead.name || lead.id}</td>
+                <td>${lead.platformId}</td>
+                <td><span class="status-pill status-active">${lead.stage}</span></td>
+                <td>${lead.createdAt}</td>
+                <td>${lead.consentAt ? 'Verified' : 'Pending'}</td>
+              </tr>
+            `).join("");
+          } else {
+            leadsTbody.innerHTML = "";
+            leadsEmpty.style.display = "block";
+            leadsEmpty.textContent = "No CRM leads found in central database (Zero simulated records).";
+          }
         }
 
       } catch (err) {
