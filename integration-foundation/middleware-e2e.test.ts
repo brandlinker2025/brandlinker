@@ -1,11 +1,12 @@
 import assert from "node:assert/strict";
 import { randomBytes } from "node:crypto";
+import { readFileSync } from "node:fs";
 import { NextRequest } from "next/server";
 import { middleware } from "../src/middleware";
 import { signSession, PRIVATE_SESSION_COOKIE } from "../src/lib/private-auth";
 
 async function runMiddlewareE2eTests() {
-  console.log("Starting Next.js Middleware E2E Access Control Tests...");
+  console.log("Starting Next.js Middleware E2E Access Control & Privacy Leakage Tests...");
 
   const testSecret = randomBytes(32).toString("hex");
   const previousToken = process.env.ADMIN_TOKEN;
@@ -49,7 +50,19 @@ async function runMiddlewareE2eTests() {
     const resStatic = await middleware(reqStatic);
     assert.equal(resStatic.status, 200, "Static bundles must pass through to render login UI");
 
-    // 7. Authenticated Request with Valid rs_private_session Cookie -> MUST pass through
+    // 7. Unauthorized Image Optimization Request (/_next/image) -> MUST return 401 JSON
+    const reqImageOpt = new NextRequest("http://localhost:3847/_next/image?url=%2Fcorporate%2Fportrait.jpg&w=640&q=75", { method: "GET" });
+    const resImageOpt = await middleware(reqImageOpt);
+    assert.equal(resImageOpt.status, 401, "Unauthorized /_next/image request must return 401");
+    const imgBody = await resImageOpt.json();
+    assert.match(imgBody.error, /private domain|authentication required/i);
+
+    // 8. Unauthorized Private Media File -> MUST redirect to /login
+    const reqMedia = new NextRequest("http://localhost:3847/corporate/portrait-dark.jpg", { method: "GET" });
+    const resMedia = await middleware(reqMedia);
+    assert.equal(resMedia.status, 307, "Direct access to private media must redirect to /login");
+
+    // 9. Authenticated Request with Valid rs_private_session Cookie -> MUST pass through
     const validSession = signSession("owner");
     const reqAuth = new NextRequest("http://localhost:3847/career", {
       method: "GET",
@@ -62,7 +75,7 @@ async function runMiddlewareE2eTests() {
     assert.equal(resAuth.headers.get("x-robots-tag"), "noindex, nofollow, noarchive, nosnippet");
     assert.equal(resAuth.headers.get("cache-control"), "private, no-cache, no-store, must-revalidate");
 
-    // 8. Authenticated API Request with Bearer Token -> MUST pass through
+    // 10. Authenticated API Request with Bearer Token -> MUST pass through
     const reqBearer = new NextRequest("http://localhost:3847/api/command-center/data", {
       method: "GET",
       headers: {
@@ -72,7 +85,7 @@ async function runMiddlewareE2eTests() {
     const resBearer = await middleware(reqBearer);
     assert.equal(resBearer.status, 200, "Valid Bearer token must pass through");
 
-    // 9. Tampered Session Cookie -> MUST be rejected and redirected
+    // 11. Tampered Session Cookie -> MUST be rejected and redirected
     const tamperedReq = new NextRequest("http://localhost:3847/gallery", {
       method: "GET",
       headers: {
@@ -82,7 +95,29 @@ async function runMiddlewareE2eTests() {
     const tamperedRes = await middleware(tamperedReq);
     assert.equal(tamperedRes.status, 307, "Tampered cookie must redirect to /login");
 
-    console.log("All Next.js Middleware E2E Access Control assertions passed cleanly!");
+    // 12. Missing Secrets Fail-Closed: When secret is absent, ALL requests fail closed
+    delete process.env.ADMIN_TOKEN;
+    delete process.env.RS_SERVICE_TOKEN;
+    delete process.env.SESSION_SECRET;
+
+    const noSecretReq = new NextRequest("http://localhost:3847/career", {
+      method: "GET",
+      headers: {
+        cookie: `${PRIVATE_SESSION_COOKIE}=${validSession}`,
+      },
+    });
+    const noSecretRes = await middleware(noSecretReq);
+    assert.equal(noSecretRes.status, 307, "When secrets are missing, middleware MUST fail closed and redirect");
+
+    // 13. Audit Metadata Leakage in Root Metadata (Verified via static source inspection)
+    const layoutSrc = readFileSync("src/app/layout.tsx", "utf8");
+    assert.equal(layoutSrc.includes("Razia Sultana Lina"), false, "Root metadata must NOT leak owner name");
+    assert.equal(layoutSrc.includes("ACI Motors"), false, "Root metadata must NOT leak employer");
+    assert.equal(layoutSrc.includes("Yamaha"), false, "Root metadata must NOT leak personal associations");
+    assert.equal(layoutSrc.includes("index: false"), true, "Robots index must be false");
+    assert.equal(layoutSrc.includes("follow: false"), true, "Robots follow must be false");
+
+    console.log("All Next.js Middleware E2E Access Control & Privacy Leakage assertions passed cleanly!");
   } finally {
     process.env.ADMIN_TOKEN = previousToken;
   }
