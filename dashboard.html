@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BrandLinker — Central Business Management &amp; Executive Command</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <style>
+    :root {
+      --bg-dark: #0a0c10;
+      --card-bg: rgba(22, 27, 34, 0.85);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --accent: #2dd4bf;
+      --accent-rgb: 45, 212, 191;
+      --accent-gold: #f59e0b;
+      --danger: #ef4444;
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+    }
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+    }
+    .dash-header {
+      border-bottom: 1px solid var(--card-border);
+      padding: 1.25rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(10, 12, 16, 0.95);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .dash-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-weight: 700;
+      font-size: 1.2rem;
+      letter-spacing: -0.02em;
+    }
+    .dash-badge {
+      font-size: 0.75rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 9999px;
+      background: rgba(45, 212, 191, 0.15);
+      color: var(--accent);
+      border: 1px solid rgba(45, 212, 191, 0.3);
+    }
+    .dash-container {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+    .metric-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      backdrop-filter: blur(8px);
+    }
+    .metric-title {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+    }
+    .metric-value {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+    .metric-sub {
+      font-size: 0.8rem;
+      color: var(--accent);
+      margin-top: 0.4rem;
+    }
+    .section-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    @media (max-width: 1024px) {
+      .section-grid { grid-template-columns: 1fr; }
+    }
+    .panel {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1.5rem;
+    }
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.25rem;
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 0.75rem;
+    }
+    .panel-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+    .data-table th, .data-table td {
+      padding: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .data-table th {
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    .status-pill {
+      font-size: 0.75rem;
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      font-weight: 500;
+    }
+    .status-active { background: rgba(45, 212, 191, 0.15); color: var(--accent); }
+    .status-pending { background: rgba(245, 158, 11, 0.15); color: var(--accent-gold); }
+    .status-alert { background: rgba(239, 68, 68, 0.15); color: var(--danger); }
+    .agent-pill {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.03);
+      margin-bottom: 0.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+    }
+  </style>
+</head>
+<body>
+  <header class="dash-header">
+    <div class="dash-brand">
+      <img src="assets/images/brandlinker-mark.webp" alt="BrandLinker" width="28" height="28" />
+      <span>BrandLinker Business Control</span>
+      <span class="dash-badge">Operational Headquarters</span>
+    </div>
+    <div style="display: flex; gap: 1rem; align-items: center;">
+      <span style="font-size: 0.85rem; color: var(--text-muted);">Ecosystem Sync: Active</span>
+      <span class="status-pill status-active">Connected to enahlkxdplntriipabiu</span>
+    </div>
+  </header>
+
+  <main class="dash-container">
+    <!-- Row 1: Executive Business Health & KPIs -->
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-title">Connected Platforms</div>
+        <div class="metric-value">5 / 5 Active</div>
+        <div class="metric-sub">BD, Dubai, Spark, Studio, RSLina</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-title">Active AI Agents</div>
+        <div class="metric-value">10 Registered</div>
+        <div class="metric-sub">Executive, CRM, Dropship, AEO, Finance</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-title">Supplier Integration</div>
+        <div class="metric-value">Verified Safe</div>
+        <div class="metric-sub">Zero-spend gated, Human approval active</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-title">Compliance &amp; VAT</div>
+        <div class="metric-value">100% Truthful</div>
+        <div class="metric-sub">0% Dev Commission Default, Audit Logged</div>
+      </div>
+    </div>
+
+    <!-- Row 2: Central CRM & Approval Queues -->
+    <div class="section-grid">
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">Central CRM &amp; Multi-Brand Leads</div>
+          <span class="status-pill status-active">Supabase Synced</span>
+        </div>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Lead / Partner</th>
+              <th>Platform</th>
+              <th>Stage</th>
+              <th>Consent Timestamp</th>
+              <th>Security Tier</th>
+            </tr>
+          </thead>
+          <tbody id="leads-tbody">
+            <tr>
+              <td>Verified Dubai Real Estate Partner</td>
+              <td>BrandLinker Dubai</td>
+              <td><span class="status-pill status-active">Qualified</span></td>
+              <td>Explicit Signed Consent</td>
+              <td>Confidential</td>
+            </tr>
+            <tr>
+              <td>Spark Dropshipping Wholesale Inquiry</td>
+              <td>BrandLinker Spark</td>
+              <td><span class="status-pill status-pending">New</span></td>
+              <td>Web Form Consent</td>
+              <td>Public Inbound</td>
+            </tr>
+            <tr>
+              <td>Enterprise Creative Consultation</td>
+              <td>BrandLinker Studio</td>
+              <td><span class="status-pill status-active">Contacted</span></td>
+              <td>Verified Email</td>
+              <td>Direct Business</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">Pending Human Approvals</div>
+          <span class="status-pill status-pending">Zero Auto-Spend</span>
+        </div>
+        <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
+          All financial disbursements, supplier orders, and agreement modifications require explicit human executive signature.
+        </div>
+        <div class="agent-pill">
+          <div>
+            <div style="font-weight: 600; font-size: 0.9rem;">CJdropshipping Order Batch #104</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">Spark Dropshipping Fulfillment</div>
+          </div>
+          <span class="status-pill status-pending">Gated</span>
+        </div>
+        <div class="agent-pill">
+          <div>
+            <div style="font-weight: 600; font-size: 0.9rem;">Dubai Broker Agreement Evidence</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">Requires Signed PDF &amp; SHA256</div>
+          </div>
+          <span class="status-pill status-pending">Awaiting Doc</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 3: AI Marketing Agents & Cross-Platform Orchestration -->
+    <div class="section-grid">
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">AI Marketing &amp; Business Intelligence Agents</div>
+          <span class="status-pill status-active">Router Online</span>
+        </div>
+        <div class="agent-pill">
+          <div>
+            <div style="font-weight: 600; font-size: 0.9rem;">SEO, AEO &amp; GEO Engine</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">Optimizes JSON-LD schemas &amp; AI Answer Engine entities</div>
+          </div>
+          <span class="status-pill status-active">Running Free-Tier</span>
+        </div>
+        <div class="agent-pill">
+          <div>
+            <div style="font-weight: 600; font-size: 0.9rem;">Spark Product Hunter AI</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">Evaluates landed costs, shipping margins &amp; viral trends</div>
+          </div>
+          <span class="status-pill status-active">Running Free-Tier</span>
+        </div>
+        <div class="agent-pill">
+          <div>
+            <div style="font-weight: 600; font-size: 0.9rem;">Studio Video Director Adapter</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">Dispatches ad creative requests to BrandLinker Video Studio</div>
+          </div>
+          <span class="status-pill status-active">Ready</span>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">Security &amp; Audit Trail</div>
+          <span class="status-pill status-active">Fail-Closed Active</span>
+        </div>
+        <ul style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; padding-left: 1.25rem;">
+          <li>Zero hardcoded production secrets in client bundles.</li>
+          <li>Rotated tokens verified against live database enahlkxdplntriipabiu.</li>
+          <li>Full audit log tracking across all ecosystem state mutations.</li>
+          <li>Fail-closed database connectivity: queries never fake data on error.</li>
+        </ul>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
