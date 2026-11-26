@@ -1,0 +1,13 @@
+{
+  "name": "brandlinker-hq",
+  "version": "1.0.0",
+  "private": true,
+  "description": "BrandLinker HQ static site + private owner dashboard (Vercel serverless functions in /api). No runtime dependencies.",
+  "scripts": {
+    "test": "node --test tests/unit/*.test.js",
+    "test:e2e": "node tests/e2e/dashboard.e2e.js",
+    "check": "node scripts/check-syntax.js",
+    "hash-password": "node scripts/hash-password.js",
+    "dev": "node tests/support/dev-server.js"
+  }
+}

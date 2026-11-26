@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BrandLinker — Business Dashboard (Private)</title>
+  <meta name="robots" content="noindex, nofollow, noarchive" />
+  <meta name="referrer" content="no-referrer" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="stylesheet" href="assets/css/dashboard.css?v=1" />
+</head>
+<body>
+  <header class="dh">
+    <div class="dh__brand">
+      <img src="assets/images/brandlinker-mark.webp" alt="" width="28" height="28" />
+      <span>BrandLinker <strong>Business Dashboard</strong></span>
+    </div>
+    <div class="dh__session" id="session-bar" hidden>
+      <span id="session-role" class="pill"></span>
+      <span id="session-exp" class="muted"></span>
+      <button type="button" id="logout-btn" class="btn btn--ghost">Log out</button>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <noscript><p class="notice">The dashboard needs JavaScript.</p></noscript>
+
+    <!-- Login -->
+    <section id="login-view" class="card login" hidden>
+      <h1>Owner sign-in</h1>
+      <p class="muted">Private area. Access is limited to the BrandLinker owner.</p>
+      <div id="auth-not-configured" class="status status--not_configured" hidden>
+        <strong>Not configured</strong> — dashboard sign-in is disabled until the owner sets the auth environment variables on the server.
+      </div>
+      <form id="login-form" autocomplete="on">
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" autocomplete="current-password" required maxlength="256" />
+        <button type="submit" class="btn">Sign in</button>
+        <p id="login-error" class="error" role="alert"></p>
+      </form>
+    </section>
+
+    <!-- Dashboard -->
+    <div id="app-view" hidden>
+      <nav class="tabs" aria-label="Dashboard sections">
+        <button type="button" data-tab="overview" class="is-active">Overview</button>
+        <button type="button" data-tab="leads">Leads CRM</button>
+        <button type="button" data-tab="jobs">Automation &amp; Approvals</button>
+        <button type="button" data-tab="audit">Audit log</button>
+        <button type="button" data-tab="health">System health</button>
+        <button type="button" data-tab="pending">Not yet connected</button>
+      </nav>
+
+      <p id="readonly-note" class="notice" hidden>Read-only session: changes are disabled.</p>
+
+      <section data-panel="overview" class="panel">
+        <div class="panel__head">
+          <h2>Overview</h2>
+          <span id="db-status" class="status"></span>
+        </div>
+        <div id="counts" class="tiles"></div>
+        <h3>Platforms</h3>
+        <div id="platforms"></div>
+        <p class="muted small" id="generated-at"></p>
+      </section>
+
+      <section data-panel="leads" class="panel" hidden>
+        <div class="panel__head"><h2>Leads CRM</h2><span id="leads-status" class="status"></span></div>
+        <form id="leads-filter" class="filters">
+          <input type="search" name="search" placeholder="Search name or contact" maxlength="100" />
+          <select name="stage">
+            <option value="">All stages</option>
+            <option value="new">new</option><option value="contacted">contacted</option>
+            <option value="qualified">qualified</option><option value="won">won</option><option value="lost">lost</option>
+          </select>
+          <input type="text" name="platform" placeholder="Platform id" maxlength="64" />
+          <select name="limit"><option>25</option><option>50</option><option>100</option></select>
+          <button type="submit" class="btn">Apply</button>
+        </form>
+        <div id="leads-table"></div>
+        <div class="pager" id="leads-pager"></div>
+      </section>
+
+      <section data-panel="jobs" class="panel" hidden>
+        <div class="panel__head"><h2>Automation &amp; approval center</h2><span id="jobs-status" class="status"></span></div>
+        <form id="jobs-filter" class="filters">
+          <select name="state">
+            <option value="awaiting_approval">awaiting_approval</option>
+            <option value="">All states</option>
+            <option value="queued">queued</option><option value="running">running</option>
+            <option value="succeeded">succeeded</option><option value="failed">failed</option><option value="cancelled">cancelled</option>
+          </select>
+          <select name="limit"><option>25</option><option>50</option><option>100</option></select>
+          <button type="submit" class="btn">Apply</button>
+        </form>
+        <div id="jobs-table"></div>
+        <div class="pager" id="jobs-pager"></div>
+      </section>
+
+      <section data-panel="audit" class="panel" hidden>
+        <div class="panel__head"><h2>Audit log</h2><span id="audit-status" class="status"></span></div>
+        <div id="audit-table"></div>
+        <div class="pager" id="audit-pager"></div>
+      </section>
+
+      <section data-panel="health" class="panel" hidden>
+        <div class="panel__head"><h2>System health</h2></div>
+        <div id="health-list"></div>
+      </section>
+
+      <section data-panel="pending" class="panel" hidden>
+        <div class="panel__head"><h2>Not yet connected</h2></div>
+        <p class="muted">These areas have no backing in the central database contract yet. Nothing is shown here until a real data source exists — no placeholder numbers.</p>
+        <div id="pending-list" class="tiles"></div>
+      </section>
+    </div>
+  </main>
+
+  <script src="assets/js/dashboard.js?v=1" defer></script>
+</body>
+</html>
