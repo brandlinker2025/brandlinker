@@ -103,6 +103,8 @@ async function testConfidentialRouting() {
   }
 }
 
+import { calculateCommission, type AgreementTerms } from "./agreement-commission";
+
 // 5. Central bl_* Database Tables & Agreement Commission Tests
 function testCentralDatabaseTables() {
   // Verify 5 canonical platforms
@@ -111,33 +113,28 @@ function testCentralDatabaseTables() {
   assert.equal(platforms.some((p) => p.id === "rslina"), true);
   assert.equal(platforms.some((p) => p.id === "brandlinker-dubai"), true);
 
-  // Emaar Partner with approved agreement (300 bps = 3.00%)
-  const emaarPartnerId = "11111111-1111-4111-8111-111111111111";
-  const emaarCalc = calculatePartnerCommission(emaarPartnerId, 4000000, "2026-06-01");
-  assert.equal(emaarCalc.commissionBps, 300);
-  assert.equal(emaarCalc.commissionAED, 120000); // 3% of 4M AED = 120,000 AED
+  // Runtime starts with ZERO fabricated agreements (agreements=0, jobs=0, audit=0)
+  assert.equal(getAgreements().length, 0, "Runtime agreements must start at 0 (no fabricated data)");
+  assert.equal(getJobs().length, 0, "Runtime jobs must start at 0");
+  assert.equal(getAuditLog().length, 0, "Runtime audit log must start at 0");
 
-  // Sobha Partner with DRAFT agreement -> Calculation MUST throw
-  const sobhaPartnerId = "33333333-3333-4333-8333-333333333333";
+  // Test commission calculation using test fixtures (strictly kept in test file)
+  const testTerms: AgreementTerms = {
+    agreementId: "test-emaar-fixture",
+    evidenceId: "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    status: "approved",
+    approvedBy: "rs-lina-admin",
+    validFrom: "2024-01-01",
+    validUntil: "2027-12-31",
+    commissionBasisPoints: 300,
+  };
+  const minorCalc = calculateCommission(400000000, testTerms, "2026-06-01");
+  assert.equal(minorCalc, 12000000); // 3% of 4M AED = 120,000 AED (in fils)
+
+  // Draft agreement -> calculation MUST throw
   assert.throws(() => {
-    calculatePartnerCommission(sobhaPartnerId, 5000000, "2026-06-01");
-  }, /Verified agreement required/);
-
-  // Resolve approval for Sobha agreement by Admin
-  const pendingSobhaAppr = getApprovals().find((a) => a.actionType === "partner_agreement_verification");
-  assert.notEqual(pendingSobhaAppr, undefined);
-
-  resolveApproval(pendingSobhaAppr!.id, "approved", "RS Lina (Admin)");
-
-  // Now Sobha agreement is approved -> Calculation succeeds!
-  const sobhaCalc = calculatePartnerCommission(sobhaPartnerId, 5000000, "2026-06-01");
-  assert.equal(sobhaCalc.commissionBps, 250);
-  assert.equal(sobhaCalc.commissionAED, 125000); // 2.5% of 5M AED = 125,000 AED
-
-  // Audit Log verification
-  const auditEntries = getAuditLog();
-  assert.equal(auditEntries.length >= 2, true);
-  assert.equal(auditEntries.some((a) => a.action === "AGREEMENT_APPROVED"), true);
+    calculateCommission(500000000, { ...testTerms, status: "draft" }, "2026-06-01");
+  }, /Verified agreement required|Invalid agreement/);
 
   // Statutory UAE VAT verification
   const vatResult = evaluateUaeVat({

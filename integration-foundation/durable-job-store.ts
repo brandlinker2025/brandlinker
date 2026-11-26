@@ -138,11 +138,11 @@ export class MemorySqlDatabase implements DatabaseAdapter {
 
 // Factory function
 export function createDurableJobStore(): JobStore {
-  if (process.env.NODE_ENV === "production" && process.env.DATABASE_URL) {
-    // Production database branch
-    // Fall back to FileJobStore if database connection is pending provisioning
-    return new FileJobStore();
+  if (process.env.NODE_ENV === "production") {
+    throw new Error(
+      "CRITICAL: Central durable database required in production. Silent FileJobStore fallback is strictly prohibited in production environments."
+    );
   }
-  // Local development durable store
+  // Local development durable store only
   return new FileJobStore();
 }
