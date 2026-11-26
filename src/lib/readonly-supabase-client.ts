@@ -9,8 +9,8 @@ let readonlyClientInstance: SupabaseClient | null = null;
  *
  * Accepts either:
  * - BL_DASHBOARD_READONLY_KEY (least privilege, dedicated read-only role/token)
- * - BL_SUPABASE_READONLY_KEY / SUPABASE_ANON_KEY (authenticated read token)
- * - Fallback to BL_SUPABASE_SERVICE_KEY if explicitly provided, but never strictly requires it.
+ * - BL_SUPABASE_READONLY_KEY (dedicated read credential only)
+ * - Never fall back to a service-role credential.
  */
 export function getReadonlySupabaseClient(): SupabaseClient | null {
   if (typeof window !== "undefined") return null;
@@ -19,11 +19,9 @@ export function getReadonlySupabaseClient(): SupabaseClient | null {
   // Check read-only keys first for least-privilege
   const key =
     process.env.BL_DASHBOARD_READONLY_KEY ||
-    process.env.BL_SUPABASE_READONLY_KEY ||
-    process.env.BL_SUPABASE_SERVICE_KEY ||
-    process.env.SUPABASE_SERVICE_ROLE_KEY;
+    process.env.BL_SUPABASE_READONLY_KEY;
 
-  if (!key) return null;
+  if (!key || key === process.env.BL_SUPABASE_SERVICE_KEY || key === process.env.SUPABASE_SERVICE_ROLE_KEY || key.startsWith('sb_secret_')) return null;
 
   if (!readonlyClientInstance) {
     readonlyClientInstance = createClient(url, key, {
