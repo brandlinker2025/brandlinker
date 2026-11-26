@@ -9,6 +9,7 @@ const { header } = require('./http');
 const COOKIE_NAME = '__Host-bl_dash';
 const SESSION_TTL_SECONDS = 8 * 60 * 60; // 8 hours absolute
 const MIN_SECRET_LENGTH = 32;
+const MIN_PLAIN_PASSWORD = 20;
 const ROLES = Object.freeze({ owner: 'owner', viewer: 'viewer' });
 
 function authConfig(env = process.env) {
@@ -17,13 +18,24 @@ function authConfig(env = process.env) {
   const viewerHash = env.DASHBOARD_VIEWER_PASSWORD_HASH || '';
   const missing = [];
   if (secret.length < MIN_SECRET_LENGTH) missing.push('DASHBOARD_SESSION_SECRET (>=32 chars)');
-  if (!parseHash(ownerHash)) missing.push('DASHBOARD_OWNER_PASSWORD_HASH (scrypt$...)');
+  // Owner credential: an scrypt hash, or (simpler setup) a long random password kept in a Sensitive env var.
+  // A plain password is hashed once per instance with a random salt and compared with scrypt + timingSafeEqual.
+  const owner = parseHash(ownerHash) || plainAsHash(env.DASHBOARD_OWNER_PASSWORD);
+  const viewer = parseHash(viewerHash) || plainAsHash(env.DASHBOARD_VIEWER_PASSWORD);
+  if (!owner) missing.push('DASHBOARD_OWNER_PASSWORD (>=20 chars) or DASHBOARD_OWNER_PASSWORD_HASH (scrypt$...)');
   return {
     configured: missing.length === 0,
     missing,
     secret,
-    hashes: { owner: parseHash(ownerHash), viewer: parseHash(viewerHash) },
+    hashes: { owner, viewer },
   };
+}
+
+const plainCache = new Map();
+function plainAsHash(pw) {
+  if (typeof pw !== 'string' || pw.length < MIN_PLAIN_PASSWORD) return null;
+  if (!plainCache.has(pw)) plainCache.set(pw, parseHash(hashPassword(pw)));
+  return plainCache.get(pw);
 }
 
 // Format: scrypt$<N>$<r>$<p>$<salt b64>$<hash b64>
