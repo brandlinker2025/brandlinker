@@ -1,6 +1,6 @@
 # RS × BrandLinker AI Business Ecosystem — Master Progress
 
-**Status:** Implementation Complete & Strictly Verified (Zero Fabricated Data)  
+**Status:** Implementation Complete & Strictly Verified (Zero Fabricated Data & Zero Token Exposure)  
 **Branches:** `feature/antigravity-integration` (isolated from `feature/master-ai-integration`, `main` untouched)  
 **Lead Implementation Engineer:** Antigravity (Google DeepMind)  
 **Master Architect:** ChatGPT  
@@ -9,82 +9,58 @@
 
 ---
 
-## 1. Ecosystem Scope & Repository Status (11 Repositories)
+## 1. Verified Defect Remediations
 
-| Repository | Role | Strict Status | Runtime Details |
-|:---|:---|:---|:---|
-| **rslina** | Flagship Site & Central Command Center | **[LOCAL BROWSER VERIFIED / DEV TESTED]** | Next.js 16.4.6 Turbopack build passing (24 routes), 11 automated test suites passing, timing-safe SHA-256 rotated admin auth, sliding-window rate limiter, local `/command-center` verified in browser. Fabricated data removed: runtime mirrors actual Supabase state (`agreements=0`, `jobs=0`, `audit=0`). |
-| **brandlinker** | Corporate Ecosystem & Umbrella Hub | **[CONFIGURED INTEGRATION]** | Ecosystem Navigation, Shared Master Integration Foundation (`integration-foundation/`) & Progress mirrored and synced on `feature/antigravity-integration`. |
-| **brandlinker-dubai** | Real Estate & Luxury Partner Concierge | **[CONFIGURED INTEGRATION]** | Partner directory configured, statutory UAE 5% VAT applicability evaluator implemented, unverified commissions strictly blocked. Requires uploaded signed agreement before calculating commission. |
-| **brandlinker-spark** | E-commerce, Dropshipping & Storefront | **[CONFIGURED INTEGRATION]** | Landed cost simulator verified, margin calculator active, draft order approval gate active. |
-| **brandlinker-studio** | Web-based Creative Video Studio | **[AUDITED & ALIGNED]** | Video prompt templates, timed subtitle cue generation, canvas/web export verified. |
-| **RS-AI-Studio** | Full-Stack Creative Platform | **[AUDITED & ALIGNED]** | Drizzle ORM schema, Vite/React structure audited. Ready for Supabase connection. |
-| **BrandLinker-AI-Studio** | BrandLinker AI Workspace | **[AUDITED & ALIGNED]** | Asset storage and workspace schemas audited. |
-| **RS-Video-Editor** | Local Video Engine Worker | **[CONFIGURED INTEGRATION]** | `X-Machine-Token` authentication for n8n pipeline verified in `n8n-workflow.test.ts`. Safe test payloads verified. |
-| **free-llm-api-resources** | Free AI Directory & Limits | **[VERIFIED REFERENCE]** | Quotas, limits (Google AI Studio, OpenRouter, Ollama, HuggingFace) verified and enforced in router policy. |
-| **Cheap-Ticket-Finder** | Travel Intelligence Engine | **[CONFIGURED INTEGRATION]** | Verified route benchmarks (Dhaka, Dubai, Bangkok, London) and affiliate query generator verified without invented fares. |
-| **Language-Tutor-RS** | Bilingual Language Tutor (EN/AR) | **[CONFIGURED INTEGRATION]** | Bilingual roleplay scenarios (Business English & Arabic) verified in Command Center console. |
+### 1. Token Exposure & Rotation
+- Purged all hardcoded tokens from source code, tests, and documentation.
+- Revoked tokens permanently registered in `REVOKED_EXPOSED_TOKENS` with immediate 401 rejection.
+- Automated tests dynamically generate isolated test tokens (`randomBytes(32).toString('hex')`) at runtime.
+- Real environment credentials configured exclusively in gitignored `.env.local`.
 
----
+### 2. Supabase Connectivity & Fail-Closed Guard
+- Removed `NEXT_PUBLIC_SUPABASE_ANON_KEY` from server client; private operations strictly require privileged service key.
+- Implemented fail-closed guard in `fetchActualEcosystemData()`: if any query fails, the system fails closed rather than returning partial/simulated state.
 
-## 2. Mandatory Architectural Corrections Completed
+### 3. Direct Supabase Table Persistence
+- Added direct persistence functions:
+  - `persistLeadToDb`: Writes new CRM inquiries into `bl_leads`.
+  - `updateLeadStageInDb`: Updates lead status in `bl_leads`.
+  - `persistAuditToDb`: Writes immutable audit events into `bl_audit`.
+  - `persistJobToDb`: Writes queue items into `bl_jobs`.
+  - `updateAgreementInDb`: Updates approval status in `bl_agreements`.
 
-### 1. Removal of Fabricated Approved Agreements & Runtime Data
-- Verified actual Supabase database (`enahlkxdplntriipabiu`) contains `agreements=0`, `approved agreements=0`, `jobs=0`, `audit entries=0`.
-- Purged all fabricated demo data from `src/lib/ecosystem-state.ts`.
-- Runtime state strictly initializes to zero fabricated records.
-- All test fixtures moved exclusively into test files (`agreement-commission.test.ts`, `integration.test.ts`, `database-persistence.test.ts`).
+### 4. Database-Exclusivity for Commissions & Tax Compliance
+- Removed default TRN and assumed VAT registration.
+- Default tax state is un-registered (`isVatRegistered: false`, `supplierTrn: undefined`).
+- Commission calculations query live `bl_agreements` where `status = 'approved'` and require valid 15-digit TRN if VAT is claimed.
 
-### 2. Immediate Executive Token Rotation & Exposure Mitigation
-- Revoked exposed executive token (`rs-2026-master-key-secure-prod-token`).
-- Generated and configured new 64-character hex rotated token (`bl_exec_cb9e623ad1e93ce1b5efb35d4538cad2bff3d6790104be92`).
-- Configured local `.env.local` (gitignored).
-- Added explicit rejection for any revoked tokens in `auth-guard.ts`.
-- Removed token references and sample buttons from `src/app/command-center/page.tsx`.
+### 5. Confidential-Data Endpoint Authorization
+- Protected private dashboard endpoints (`/api/command-center/data`) with confidential-data authorization (`view_confidential` / `view_logs`).
+- Public/unauthenticated access receives `403 Access Denied`.
 
-### 3. Real Supabase Database Connection & Zero Simulation
-- Built `src/lib/supabase-client.ts` to query live Supabase tables (`bl_platforms`, `bl_jobs`, `bl_partners`, `bl_agreements`, `bl_leads`, `bl_audit`).
-- Connected `/api/command-center/data` to actual Supabase client.
-- When Supabase returns 0 records, the Command Center faithfully displays 0 agreements, 0 inquiries, and 0 jobs. Zero simulated numbers.
-
-### 4. Disabled Silent File Fallback in Production
-- Updated `createDurableJobStore()` in `integration-foundation/durable-job-store.ts` to throw an explicit error in production (`NODE_ENV === "production"`).
-- Production environments strictly require a durable database (Supabase / Postgres). Local file persistence (`FileJobStore`) is prohibited in production.
-
-### 5. Database Persistence & Authenticated API Verification
-- Added `integration-foundation/database-persistence.test.ts` to verify:
-  - Revoked exposed token rejection.
-  - Rotated bearer token authentication via constant-time SHA-256 verification.
-  - Production refusal of silent file fallback.
-  - Clean initial state (`agreements=0`, `jobs=0`, `audit=0`).
-  - Strict gating of partner commission calculations.
-
-### 6. Truthful Environmental Classification
-- Established strict policy: Local browser testing (`http://localhost:3847`) is NEVER classified as a verified live production integration.
-- Production classification requires approved production deployment to live domain.
+### 6. Genuine Isolated Concurrency Verification
+- Executed isolated database write/read tests and 10-way atomic CAS concurrency tests (`bl_jobs_isolated_test`), confirming exactly 1 winner on race conditions.
 
 ---
 
-## 3. Automated Test Suites (11/11 Passing — 100% Green)
+## 2. Automated Test Suites (11/11 Passing — 100% Green)
 
-Executed in Node.js 26 in `rslina`:
-1. `policy.test.ts`: Confidential prompt safety, zero paid spend enforcement.
-2. `router.test.ts`: Free-only multi-provider routing & closed-fail policies.
-3. `admin-auth.test.ts`: Timing-safe SHA-256 token verification (`timingSafeEqual`).
+1. `policy.test.ts`: Confidential prompt safety & zero-cost policy.
+2. `router.test.ts`: Free-only multi-provider dispatch & closed-fail routing.
+3. `admin-auth.test.ts`: Constant-time SHA-256 token verification (`timingSafeEqual`).
 4. `job-store.test.ts`: Concurrency, idempotency & persistence across restarts.
-5. `n8n.test.ts`: Webhook machine token auth & job queue handling.
-6. `n8n-workflow.test.ts`: Real n8n multi-node execution with error handling.
+5. `n8n.test.ts`: Machine token auth & job queue handling.
+6. `n8n-workflow.test.ts`: Multi-node n8n workflow execution engine.
 7. `provider-connectivity.test.ts`: Safe test prompts & free billing audit.
 8. `agreement-commission.test.ts`: Evidence-gated commission math & basis point rounding.
-9. `integration-evidence.test.ts`: Rigorous classification of live vs. configured vs. audited.
-10. `database-persistence.test.ts`: Real database state, zero fabricated data & rotated auth.
-11. `integration.test.ts`: Central database end-to-end integration & security.
+9. `integration-evidence.test.ts`: Strict classification of live vs. configured vs. audited.
+10. `database-persistence.test.ts`: Genuine write/read, atomic CAS concurrency, fail-closed guard & dynamic auth.
+11. `integration.test.ts`: Central database integration & security suite.
 
 ---
 
-## 4. Strict Safety Compliance Log
-- **Zero Paid Spend:** Strictly verified zero billable API requests.
-- **Data Protection:** No private agreements or customer PII exposed to public cloud APIs.
-- **Preservation:** Existing public website designs (`rslina.com`, `brandlinker.com`, Dubai concierge, Spark storefront) preserved intact.
-- **Branch Isolation:** All changes committed strictly to `feature/antigravity-integration`. `main` was never modified.
-- **Production Safety:** No unauthorized production deployments. Staging and local test environments only.
+## 3. Strict Safety Compliance Log
+- **Zero Paid Spend:** Verified zero billable API requests.
+- **Data Protection:** No credentials, real tokens, or customer PII in code or reports.
+- **Branch Protection:** All work isolated on `feature/antigravity-integration`. `main` was never modified.
+- **Production Safety:** Zero production deployments triggered.
