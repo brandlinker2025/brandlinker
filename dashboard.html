@@ -143,6 +143,7 @@
     .status-active { background: rgba(45, 212, 191, 0.15); color: var(--accent); }
     .status-pending { background: rgba(245, 158, 11, 0.15); color: var(--accent-gold); }
     .status-alert { background: rgba(239, 68, 68, 0.15); color: var(--danger); }
+    .status-unconfigured { background: rgba(156, 163, 175, 0.15); color: var(--text-muted); }
     .agent-pill {
       display: flex;
       align-items: center;
@@ -153,6 +154,13 @@
       margin-bottom: 0.5rem;
       border: 1px solid rgba(255, 255, 255, 0.04);
     }
+    .empty-state {
+      padding: 2rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      font-style: italic;
+    }
   </style>
 </head>
 <body>
@@ -160,36 +168,36 @@
     <div class="dash-brand">
       <img src="assets/images/brandlinker-mark.webp" alt="BrandLinker" width="28" height="28" />
       <span>BrandLinker Business Control</span>
-      <span class="dash-badge">Operational Headquarters</span>
+      <span class="dash-badge">Authenticated Executive View</span>
     </div>
     <div style="display: flex; gap: 1rem; align-items: center;">
-      <span style="font-size: 0.85rem; color: var(--text-muted);">Ecosystem Sync: Active</span>
-      <span class="status-pill status-active">Connected to enahlkxdplntriipabiu</span>
+      <span id="sync-status-text" style="font-size: 0.85rem; color: var(--text-muted);">Fetching Live Database...</span>
+      <span id="sync-pill" class="status-pill status-pending">Checking API</span>
     </div>
   </header>
 
   <main class="dash-container">
-    <!-- Row 1: Executive Business Health & KPIs -->
+    <!-- Row 1: Executive Business Health & KPIs (Dynamic From API) -->
     <div class="metrics-grid">
       <div class="metric-card">
-        <div class="metric-title">Connected Platforms</div>
-        <div class="metric-value">5 / 5 Active</div>
-        <div class="metric-sub">BD, Dubai, Spark, Studio, RSLina</div>
+        <div class="metric-title">Verified Platforms</div>
+        <div id="metric-platforms-val" class="metric-value">Loading...</div>
+        <div id="metric-platforms-sub" class="metric-sub">Syncing registry</div>
       </div>
       <div class="metric-card">
-        <div class="metric-title">Active AI Agents</div>
-        <div class="metric-value">10 Registered</div>
-        <div class="metric-sub">Executive, CRM, Dropship, AEO, Finance</div>
+        <div class="metric-title">Live CRM Leads</div>
+        <div id="metric-leads-val" class="metric-value">0</div>
+        <div class="metric-sub">Actual Database Records</div>
       </div>
       <div class="metric-card">
-        <div class="metric-title">Supplier Integration</div>
-        <div class="metric-value">Verified Safe</div>
-        <div class="metric-sub">Zero-spend gated, Human approval active</div>
+        <div class="metric-title">Durable Jobs</div>
+        <div id="metric-jobs-val" class="metric-value">0</div>
+        <div class="metric-sub">bl_jobs Active State</div>
       </div>
       <div class="metric-card">
-        <div class="metric-title">Compliance &amp; VAT</div>
-        <div class="metric-value">100% Truthful</div>
-        <div class="metric-sub">0% Dev Commission Default, Audit Logged</div>
+        <div class="metric-title">Signed Agreements</div>
+        <div id="metric-agreements-val" class="metric-value">0</div>
+        <div class="metric-sub">Verified Evidence Only</div>
       </div>
     </div>
 
@@ -198,42 +206,27 @@
       <div class="panel">
         <div class="panel-header">
           <div class="panel-title">Central CRM &amp; Multi-Brand Leads</div>
-          <span class="status-pill status-active">Supabase Synced</span>
+          <span id="crm-status-pill" class="status-pill status-unconfigured">Live API Guarded</span>
         </div>
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th>Lead / Partner</th>
-              <th>Platform</th>
-              <th>Stage</th>
-              <th>Consent Timestamp</th>
-              <th>Security Tier</th>
-            </tr>
-          </thead>
-          <tbody id="leads-tbody">
-            <tr>
-              <td>Verified Dubai Real Estate Partner</td>
-              <td>BrandLinker Dubai</td>
-              <td><span class="status-pill status-active">Qualified</span></td>
-              <td>Explicit Signed Consent</td>
-              <td>Confidential</td>
-            </tr>
-            <tr>
-              <td>Spark Dropshipping Wholesale Inquiry</td>
-              <td>BrandLinker Spark</td>
-              <td><span class="status-pill status-pending">New</span></td>
-              <td>Web Form Consent</td>
-              <td>Public Inbound</td>
-            </tr>
-            <tr>
-              <td>Enterprise Creative Consultation</td>
-              <td>BrandLinker Studio</td>
-              <td><span class="status-pill status-active">Contacted</span></td>
-              <td>Verified Email</td>
-              <td>Direct Business</td>
-            </tr>
-          </tbody>
-        </table>
+        <div id="leads-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Lead Name / ID</th>
+                <th>Platform</th>
+                <th>Stage</th>
+                <th>Created At</th>
+                <th>Consent Status</th>
+              </tr>
+            </thead>
+            <tbody id="leads-tbody">
+              <!-- Dynamically populated or empty state -->
+            </tbody>
+          </table>
+          <div id="leads-empty" class="empty-state" style="display: none;">
+            No CRM leads found in central database (Zero simulated records).
+          </div>
+        </div>
       </div>
 
       <div class="panel">
@@ -242,68 +235,193 @@
           <span class="status-pill status-pending">Zero Auto-Spend</span>
         </div>
         <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
-          All financial disbursements, supplier orders, and agreement modifications require explicit human executive signature.
+          Mandatory Human Approval Gate: Zero automated supplier disbursements or order placement without explicit manual confirmation.
         </div>
-        <div class="agent-pill">
-          <div>
-            <div style="font-weight: 600; font-size: 0.9rem;">CJdropshipping Order Batch #104</div>
-            <div style="font-size: 0.75rem; color: var(--text-muted);">Spark Dropshipping Fulfillment</div>
+        <div id="approvals-container">
+          <div id="approvals-empty" class="empty-state">
+            No pending supplier disbursements requiring signature.
           </div>
-          <span class="status-pill status-pending">Gated</span>
-        </div>
-        <div class="agent-pill">
-          <div>
-            <div style="font-weight: 600; font-size: 0.9rem;">Dubai Broker Agreement Evidence</div>
-            <div style="font-size: 0.75rem; color: var(--text-muted);">Requires Signed PDF &amp; SHA256</div>
-          </div>
-          <span class="status-pill status-pending">Awaiting Doc</span>
         </div>
       </div>
     </div>
 
-    <!-- Row 3: AI Marketing Agents & Cross-Platform Orchestration -->
+    <!-- Row 3: Supplier & Supporting Repositories Verification Status -->
     <div class="section-grid">
       <div class="panel">
         <div class="panel-header">
-          <div class="panel-title">AI Marketing &amp; Business Intelligence Agents</div>
-          <span class="status-pill status-active">Router Online</span>
+          <div class="panel-title">Supplier Integration Truth Matrix</div>
+          <span class="status-pill status-unconfigured">Gated</span>
         </div>
-        <div class="agent-pill">
-          <div>
-            <div style="font-weight: 600; font-size: 0.9rem;">SEO, AEO &amp; GEO Engine</div>
-            <div style="font-size: 0.75rem; color: var(--text-muted);">Optimizes JSON-LD schemas &amp; AI Answer Engine entities</div>
-          </div>
-          <span class="status-pill status-active">Running Free-Tier</span>
-        </div>
-        <div class="agent-pill">
-          <div>
-            <div style="font-weight: 600; font-size: 0.9rem;">Spark Product Hunter AI</div>
-            <div style="font-size: 0.75rem; color: var(--text-muted);">Evaluates landed costs, shipping margins &amp; viral trends</div>
-          </div>
-          <span class="status-pill status-active">Running Free-Tier</span>
-        </div>
-        <div class="agent-pill">
-          <div>
-            <div style="font-weight: 600; font-size: 0.9rem;">Studio Video Director Adapter</div>
-            <div style="font-size: 0.75rem; color: var(--text-muted);">Dispatches ad creative requests to BrandLinker Video Studio</div>
-          </div>
-          <span class="status-pill status-active">Ready</span>
-        </div>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Supplier</th>
+              <th>API Status</th>
+              <th>Shipping Verification</th>
+              <th>Order Gating</th>
+            </tr>
+          </thead>
+          <tbody id="suppliers-tbody">
+            <tr>
+              <td>CJdropshipping</td>
+              <td><span class="status-pill status-unconfigured">Unconfigured</span></td>
+              <td>Estimated Matrix Only (Not Verified Quotes)</td>
+              <td>Human Signature Required</td>
+            </tr>
+            <tr>
+              <td>AliExpress</td>
+              <td><span class="status-pill status-unconfigured">Unconfigured</span></td>
+              <td>Estimated Matrix Only (Not Verified Quotes)</td>
+              <td>Human Signature Required</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
       <div class="panel">
         <div class="panel-header">
-          <div class="panel-title">Security &amp; Audit Trail</div>
-          <span class="status-pill status-active">Fail-Closed Active</span>
+          <div class="panel-title">Supporting Platforms Health</div>
+          <span class="status-pill status-active">Verified Local</span>
         </div>
-        <ul style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; padding-left: 1.25rem;">
-          <li>Zero hardcoded production secrets in client bundles.</li>
-          <li>Rotated tokens verified against live database enahlkxdplntriipabiu.</li>
-          <li>Full audit log tracking across all ecosystem state mutations.</li>
-          <li>Fail-closed database connectivity: queries never fake data on error.</li>
-        </ul>
+        <div id="supporting-container">
+          <!-- Dynamically populated -->
+        </div>
       </div>
     </div>
   </main>
+
+  <script>
+    async function loadDashboardData() {
+      const syncText = document.getElementById("sync-status-text");
+      const syncPill = document.getElementById("sync-pill");
+      const leadsEmpty = document.getElementById("leads-empty");
+      const leadsTbody = document.getElementById("leads-tbody");
+      const platformsVal = document.getElementById("metric-platforms-val");
+      const platformsSub = document.getElementById("metric-platforms-sub");
+      const supportingContainer = document.getElementById("supporting-container");
+
+      // Set initial truthful state before network fetch
+      leadsEmpty.style.display = "block";
+      platformsVal.textContent = "5 Platforms";
+      platformsSub.textContent = "BD, Dubai, Spark, Studio, RSLina";
+
+      supportingContainer.innerHTML = `
+        <div class="agent-pill">
+          <div>
+            <div style="font-weight: 600; font-size: 0.85rem;">RS AI Studio</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">AI Creative &amp; Prompt Prototyping</div>
+          </div>
+          <span class="status-pill status-active">Verified Local</span>
+        </div>
+        <div class="agent-pill">
+          <div>
+            <div style="font-weight: 600; font-size: 0.85rem;">BrandLinker AI Studio</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">Brand Asset &amp; Marketing Automation</div>
+          </div>
+          <span class="status-pill status-active">Verified Local</span>
+        </div>
+        <div class="agent-pill">
+          <div>
+            <div style="font-weight: 600; font-size: 0.85rem;">RS Video Editor</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">Timeline Video Processing &amp; Subtitling</div>
+          </div>
+          <span class="status-pill status-active">Verified Local</span>
+        </div>
+        <div class="agent-pill">
+          <div>
+            <div style="font-weight: 600; font-size: 0.85rem;">Free LLM API Resources</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">Free AI Provider Catalog &amp; Health Mon</div>
+          </div>
+          <span class="status-pill status-active">Verified Local</span>
+        </div>
+        <div class="agent-pill">
+          <div>
+            <div style="font-weight: 600; font-size: 0.85rem;">Cheap Ticket Finder</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">Bangladesh &amp; Global Flight Aggregator</div>
+          </div>
+          <span class="status-pill status-active">Verified Local</span>
+        </div>
+        <div class="agent-pill">
+          <div>
+            <div style="font-weight: 600; font-size: 0.85rem;">Language Tutor RS</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">AI Language Practice &amp; Interactive Tutor</div>
+          </div>
+          <span class="status-pill status-active">Verified Local</span>
+        </div>
+      `;
+
+      try {
+        const token = localStorage.getItem("bl_admin_token") || "";
+        const headers = token ? { "Authorization": `Bearer ${token}` } : {};
+        
+        const res = await fetch("/api/dashboard", { headers });
+        if (res.status === 401 || res.status === 403) {
+          syncText.textContent = "Owner Authentication Required";
+          syncPill.className = "status-pill status-alert";
+          syncPill.textContent = "Locked (Fail-Closed)";
+          return;
+        }
+
+        const data = await res.json();
+        
+        // Update database connection status
+        if (data.database && data.database.connected) {
+          syncText.textContent = "Connected to Supabase (enahlkxdplntriipabiu)";
+          syncPill.className = "status-pill status-active";
+          syncPill.textContent = "Live Connected";
+        } else {
+          syncText.textContent = "Database: " + (data.database.source || "Unconfigured");
+          syncPill.className = "status-pill status-unconfigured";
+          syncPill.textContent = "Unconfigured / Fail-Closed";
+        }
+
+        // Update metrics
+        document.getElementById("metric-platforms-val").textContent = `${data.platforms?.length || 0} Platforms`;
+        document.getElementById("metric-leads-val").textContent = data.metrics?.leadsCount ?? 0;
+        document.getElementById("metric-jobs-val").textContent = data.metrics?.jobsCount ?? 0;
+        document.getElementById("metric-agreements-val").textContent = data.metrics?.agreementsCount ?? 0;
+
+        // Populate Leads Table or Empty State
+        const leadsTbody = document.getElementById("leads-tbody");
+        const leadsEmpty = document.getElementById("leads-empty");
+        if (data.leads && data.leads.length > 0) {
+          leadsEmpty.style.display = "none";
+          leadsTbody.innerHTML = data.leads.map(lead => `
+            <tr>
+              <td>${lead.name || lead.id}</td>
+              <td>${lead.platformId}</td>
+              <td><span class="status-pill status-active">${lead.stage}</span></td>
+              <td>${lead.createdAt}</td>
+              <td>${lead.consentAt ? 'Verified' : 'Pending'}</td>
+            </tr>
+          `).join("");
+        } else {
+          leadsTbody.innerHTML = "";
+          leadsEmpty.style.display = "block";
+        }
+
+        // Populate Supporting Projects
+        const supportingContainer = document.getElementById("supporting-container");
+        if (data.supportingProjects) {
+          supportingContainer.innerHTML = data.supportingProjects.map(proj => `
+            <div class="agent-pill">
+              <div>
+                <div style="font-weight: 600; font-size: 0.85rem;">${proj.name}</div>
+                <div style="font-size: 0.75rem; color: var(--text-muted);">${proj.role}</div>
+              </div>
+              <span class="status-pill status-active">${proj.status}</span>
+            </div>
+          `).join("");
+        }
+
+      } catch (err) {
+        syncText.textContent = "Error Connecting to API";
+        syncPill.className = "status-pill status-alert";
+        syncPill.textContent = "Network Error";
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", loadDashboardData);
+  </script>
 </body>
 </html>

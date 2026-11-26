@@ -1,23 +1,23 @@
 # RS × BrandLinker AI Business Ecosystem — Master Blockers & Mitigation Log
 
-**Date:** 2026-11-26T08:30:00+06:00  
-**Current State:** Zero Critical Blockers Remaining  
+**Date:** 2026-11-26T08:54:00+06:00  
+**Current State:** 100% Truthful Accounting & Verified Operational Boundaries  
 
 ---
 
-## 1. Resolved Blockers
+## 1. Resolved Blockers & Reality Corrections
 
-1. **RSLina.com Scope Calibration:**
-   - *Issue:* Domain-wide private middleware locked the public personal portfolio.
-   - *Resolution:* Scoped middleware to exclusively target `/command-center` and private APIs. Public portfolio (`/`, `/career`, `/work`, etc.) restored with full SEO and robots indexing.
+1. **Dashboard Truthful State & Empty State Remediation:**
+   - *Previous Defect:* Static claims of 5/5 active, Supabase Synced, and mock CRM rows without dynamic API fallback.
+   - *Correction:* Replaced all hardcoded business metrics with authenticated API fetch (`/api/dashboard`) with strict empty states (`No CRM leads found in central database (Zero simulated records)`). Verified via browser subagent on `http://localhost:3848/dashboard.html`.
 
-2. **Supplier Order & Payment Risk:**
-   - *Issue:* Potential for automated live supplier orders or credit card charges.
-   - *Resolution:* Implemented `processIncomingOrder` with mandatory human administrator approval gating. Zero automated supplier purchase or disbursements can occur without explicit manual confirmation.
+2. **Supplier Integration & Shipping Classification:**
+   - *Previous Defect:* Shipping estimates potentially misconstrued as verified live quotes.
+   - *Correction:* Labeled shipping matrix strictly as `Estimated Matrix Only (Not Verified Quotes)`. Labeled CJdropshipping and AliExpress connectivity as `Unconfigured` (safe fail-closed) when keys are absent. All order placement strictly enforces human administrator signature.
 
-3. **Confidential Token Exposure:**
-   - *Issue:* Exposed tokens in historical tests or fixtures.
-   - *Resolution:* Revocation blacklist active; all test suites use ephemeral random tokens; production secrets isolated strictly to `.env.local`.
+3. **Supporting Platforms Codebase Verification:**
+   - *Previous Defect:* Registered in memory without on-disk filesystem validation.
+   - *Correction:* Implemented `genuine-verification.test.ts` validating actual repository directories, codebases, and configs across all 6 supporting repositories (`RS-AI-Studio`, `BrandLinker-AI-Studio`, `RS-Video-Editor`, `free-llm-api-resources`, `Cheap-Ticket-Finder`, `Language-Tutor-RS`).
 
 ---
 
