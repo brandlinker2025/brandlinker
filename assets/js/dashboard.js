@@ -79,7 +79,19 @@
   }
 
   // ---------- auth ----------
+  // Wipe all rendered data so nothing from a previous session stays in the DOM.
+  function resetView() {
+    ['counts', 'platforms', 'leads-table', 'leads-pager', 'jobs-table', 'jobs-pager', 'audit-table', 'audit-pager', 'health-list', 'pending-list']
+      .forEach(function (id) { clear($(id)); });
+    ['db-status', 'leads-status', 'jobs-status', 'audit-status', 'generated-at'].forEach(function (id) { $(id).textContent = ''; });
+    state.leads.offset = state.jobs.offset = state.audit.offset = 0;
+    Array.prototype.forEach.call(document.querySelectorAll('.tabs button'), function (x) { x.classList.toggle('is-active', x.getAttribute('data-tab') === 'overview'); });
+    Array.prototype.forEach.call(document.querySelectorAll('[data-panel]'), function (p) { p.hidden = p.getAttribute('data-panel') !== 'overview'; });
+  }
+
   function showLogin(authConfigured) {
+    state.role = null;
+    resetView();
     $('app-view').hidden = true;
     $('session-bar').hidden = true;
     $('login-view').hidden = false;
