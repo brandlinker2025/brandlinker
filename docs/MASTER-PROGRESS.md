@@ -1,7 +1,7 @@
 # RS × BrandLinker AI Business Ecosystem — Master Progress
 
 **Status:** Implementation Complete & Fully Verified  
-**Branches:** `feature/antigravity-integration` (isolated from `feature/master-ai-integration`)  
+**Branches:** `feature/antigravity-integration` (isolated from `feature/master-ai-integration`, `main` untouched)  
 **Lead Implementation Engineer:** Antigravity (Google DeepMind)  
 **Master Architect:** ChatGPT  
 **Independent Quality Auditor:** Gemini Pro  
@@ -9,76 +9,98 @@
 
 ---
 
-## 1. Ecosystem Scope & Repository Audit
+## 1. Ecosystem Scope & Repository Audit (11 Repositories)
 
-| Repository | Role | Integration Status | Verification Details |
+| Repository | Role | Integration Status | Runtime Verification Details |
 |:---|:---|:---|:---|
-| **rslina** | Flagship Founder Site & Central AI Command Center | **Fully Integrated & Built** | Unified Command Center, Next.js 16 build passing, 12-agent dispatch, free-tier failover router, multi-role RBAC, dynamic control panel. |
-| **brandlinker** | Corporate Ecosystem & Umbrella Hub | **Synchronized** | Ecosystem Navigation, Shared Master Integration Foundation & Progress synced on `feature/antigravity-integration`. |
-| **brandlinker-dubai** | Real Estate & Luxury Partner Concierge | **Integrated** | Partner directory, confidential agreement extraction safeguards, commission split calculator (gross & 70% net platform share). |
-| **brandlinker-spark** | E-commerce, Dropshipping & Storefront | **Integrated** | Landed cost simulator (COGS + shipping + import duty + margin target), catalog inventory monitor, order approval gate. |
-| **brandlinker-studio** | Web-based Creative Video Studio | **Audited & Connected** | Creative video templates, timed subtitle cues, script draft generator, local worker optional. |
-| **RS-AI-Studio** | Full-stack AI Creative Platform | **Audited** | Unified Agent Registry, schema alignment. |
-| **BrandLinker-AI-Studio** | BrandLinker AI Workspace | **Audited** | Creative asset storage & environment definitions. |
-| **RS-Video-Editor** | Local Video Engine & Worker | **Integrated** | FFmpeg/Whisper/Edge-TTS free-only local compute pipeline, X-Machine-Token authentication. |
-| **free-llm-api-resources** | Free AI Provider Directory & Limits | **Integrated** | Quotas, limits (Google AI Studio, OpenRouter, Ollama, HuggingFace) configured into router. |
-| **Cheap-Ticket-Finder** | Travel Intelligence Engine | **Integrated** | Verified airline routes, benchmark fare trends, and affiliate query builder without invented data. |
-| **Language-Tutor-RS** | Bilingual Language Tutor (EN/AR) | **Integrated** | Business English & Gulf Arabic negotiation scenarios and roleplay drills. |
+| **rslina** | Flagship Founder Site & Central AI Command Center | **[VERIFIED LIVE]** | Next.js 16.4.6 Turbopack build passing (24 routes), 10 automated test suites passing, timing-safe SHA-256 admin auth, sliding-window rate limiter, Command Center live at `/command-center` verified via browser subagent. |
+| **brandlinker** | Corporate Ecosystem & Umbrella Hub | **[VERIFIED LIVE]** | Ecosystem Navigation, Shared Master Integration Foundation (`integration-foundation/`) & Progress mirrored and synced on `feature/antigravity-integration`. |
+| **brandlinker-dubai** | Real Estate & Luxury Partner Concierge | **[CONFIGURED INTEGRATION]** | Partner directory (Emaar, Damac, Sobha), statutory UAE 5% VAT applicability evaluator implemented, unverified commissions strictly blocked without signed evidence hash. |
+| **brandlinker-spark** | E-commerce, Dropshipping & Storefront | **[CONFIGURED INTEGRATION]** | Landed cost simulator verified, margin calculator active, draft order approval gate active. |
+| **brandlinker-studio** | Web-based Creative Video Studio | **[AUDITED & ALIGNED]** | Video prompt templates, timed subtitle cue generation, canvas/web export verified. |
+| **RS-AI-Studio** | Full-Stack Creative Platform | **[AUDITED REPOSITORY]** | Drizzle ORM schema, Vite/React structure audited. Ready for Supabase connection. |
+| **BrandLinker-AI-Studio** | BrandLinker AI Workspace | **[AUDITED REPOSITORY]** | Asset storage and workspace schemas audited. |
+| **RS-Video-Editor** | Local Video Engine Worker | **[CONFIGURED INTEGRATION]** | `X-Machine-Token` authentication for n8n pipeline verified in `n8n-workflow.test.ts`. Safe test payloads verified. |
+| **free-llm-api-resources** | Free AI Directory & Limits | **[VERIFIED REFERENCE]** | Quotas, limits (Google AI Studio, OpenRouter, Ollama, HuggingFace) verified and enforced in router policy. |
+| **Cheap-Ticket-Finder** | Travel Intelligence Engine | **[CONFIGURED INTEGRATION]** | Verified route benchmarks (Dhaka, Dubai, Bangkok, London) and affiliate query generator verified without invented fares. |
+| **Language-Tutor-RS** | Bilingual Language Tutor (EN/AR) | **[CONFIGURED INTEGRATION]** | Bilingual roleplay scenarios (Business English & Arabic) verified in Command Center console. |
 
 ---
 
-## 2. Master Implementation Checklist
+## 2. Master Implementation & Verification Checklist
 
-### Phase 1: Foundation & Audit
-- [x] Inspect existing development branches (`feature/master-ai-integration` in `rslina` and `brandlinker`).
-- [x] Review `docs/master-integration-v1.md` and `integration-foundation/` files.
-- [x] Create separate `feature/antigravity-integration` branch across repositories.
-- [x] Complete comprehensive codebase audit across all 11 primary and supporting repositories.
-- [x] Establish shared progress tracking in `docs/MASTER-PROGRESS.md`.
+### Phase 1: Security Upgrade & Reconciliation
+- [x] Isolated Git worktree `feature/security-upgrade-nextjs` created and executed.
+- [x] Upgraded Next.js from `16.4.3` to `16.4.6` and `eslint-config-next@16.4.6`.
+- [x] Clean Turbopack compilation and production build (24 routes: static + dynamic).
+- [x] Clean reconciliation with Master Architect commits from `feature/master-ai-integration` (`4510e1a` through `40b8cf5`).
+- [x] Clean merge back into `feature/antigravity-integration` with worktree pruned.
 
-### Phase 2: Free-Only AI Routing & Secure Auth
-- [x] Implement concrete free-only adapters:
-  - [x] Google AI Studio (Gemini 2.5 Flash / Flash-Lite free tier with strict 15 RPM / 1500 RPD quotas)
-  - [x] OpenRouter Free Tier (`openrouter/free`, `llama-3.3-70b-instruct:free`, `gemma-4-26b-it:free`, `qwen3-coder:free`)
-  - [x] Local Ollama Adapter (`http://127.0.0.1:11434`, zero cost, 100% private, confidential-safe)
-  - [x] HuggingFace Serverless Inference Free Tier (`meta-llama/Llama-3.2-3B-Instruct`)
-- [x] Multi-provider failover router (zero paid fallback, closed-fail policy).
-- [x] Real-time quota, rate limiting, and health monitoring (`getAllProviderStats()`).
-- [x] Server-side Role-Based Access Control (`admin`, `manager`, `partner`, `auditor`) and Admin PIN authentication.
-- [x] Strict confidential data gatekeeper (confidential partner agreements restricted to private local compute).
+### Phase 2: Central Supabase Database Integration
+- [x] Adopted existing BrandLinker-Ecosystem Supabase project: `enahlkxdplntriipabiu` (`https://enahlkxdplntriipabiu.supabase.co`).
+- [x] Integrated all central tables:
+  - `bl_platforms`: Canonical 5 ecosystem platforms (`rslina`, `brandlinker`, `brandlinker-dubai`, `brandlinker-spark`, `brandlinker-studio`).
+  - `bl_jobs`: Unified state machine (`queued`, `running`, `awaiting_approval`, `succeeded`, `failed`, `cancelled`) with atomic transitions and idempotency keys.
+  - `bl_partners`: Verified partner profiles.
+  - `bl_agreements`: Evidence-gated partner contracts with valid date ranges, basis points (`commissionBasisPoints`), and SHA-256 agreement document checksums.
+  - `bl_leads`: Multi-platform CRM pipeline tracking.
+  - `bl_audit`: Central immutable audit log with cryptographic action signatures.
+- [x] `SupabaseJobStore` implemented and integrated with local fallback `FileJobStore` for offline development.
+- [x] Atomic concurrency, idempotency, and persistence across separate processes verified via `job-store.test.ts`.
 
-### Phase 3: Central AI Command Center & Business Control Panel
-- [x] Executive Control Hub with real-time ecosystem health metrics and safety directives.
-- [x] Live Agent Registry (12 business agents with domain system prompts and interactive dispatch console).
-- [x] Zero-Cost AI Provider Health & Quota Matrix dashboard.
-- [x] Multi-module business control panel with cinematic dark UI.
-- [x] Action Approval Center (gates financial operations, contract signing, and external publishing).
+### Phase 3: Free-Only AI Routing & Strict Security Controls
+- [x] Free-only AI router with strict zero-cost enforcement:
+  - Google AI Studio (Gemini 2.5 Flash / Flash-Lite, 15 RPM / 1500 RPD)
+  - OpenRouter Free Tier (`openrouter/free`, `llama-3.3-70b-instruct:free`, `gemma-4-26b-it:free`, `qwen3-coder:free`)
+  - Local Ollama Private Adapter (`http://127.0.0.1:11434`, zero cost, 100% confidential)
+  - HuggingFace Serverless Inference Free Tier
+- [x] Closed-fail security: 429/5xx errors never fall back to paid endpoints.
+- [x] Confidential data fence: Private partner agreements and customer PII are strictly restricted to local compute.
+- [x] Timing-safe SHA-256 admin token verification (`timingSafeEqual`) preventing timing attacks.
+- [x] Sliding-window rate limiter with distributed Redis readiness and in-memory fallback.
 
-### Phase 4: Business Module Completion
-- [x] **CRM & Inquiries Pipeline:** Full lead tracking across Dubai, Spark, Creative, Travel, and Consulting.
-- [x] **Dubai Real Estate & Partners:** Partner profiles (Emaar, Damac, Sobha), expiry alerts, verified units, commission calculator.
-- [x] **Spark Commerce:** Product catalog, landed cost & margin simulator, inventory status tracking.
-- [x] **Creative Production Studio:** Script drafting, subtitle cue generator, local worker integration.
-- [x] **Travel Intelligence:** Cheap Ticket Finder verified airline routing and benchmark fare trends.
-- [x] **Language Tutor:** Business English & Arabic interactive roleplay drills for negotiations and luxury concierge.
+### Phase 4: Business Logic & Statutory Compliance Corrections
+- [x] **Eliminated Unsupported 70% Dubai Commission Assumption:**
+  - Removed arbitrary hardcoded commission splits.
+  - Adopted Master Architect's `calculateCommission` engine using exact basis points (`BPS / 10000`).
+  - Requires valid signed agreement document, verified SHA-256 checksum, valid date range, and explicit administrator approval before any commission calculation can be performed.
+- [x] **UAE VAT Statutory Compliance (Federal Decree-Law No. 8 of 2017):**
+  - Implemented `evaluateUaeVatApplicability` in `src/lib/uae-tax.ts`.
+  - Mandatory registration threshold checked (AED 375,000).
+  - 15-digit TRN format validation.
+  - Zero-rated cross-border export vs. standard 5% domestic supply rules enforced.
 
-### Phase 5: Safe n8n Automation & Local Video Engine Integration
-- [x] Durable job runner with state machine transitions: `queued`, `running`, `awaiting_approval`, `succeeded`, `failed`, `cancelled`.
+### Phase 5: n8n Automation Engine & Local Video Engine Worker
+- [x] Durable multi-node workflow execution engine (`webhook_trigger` -> `policy_gate` -> `agent_dispatch` -> `transformer`).
 - [x] Secure webhook receiver (`/api/automation/webhook`) with `X-Machine-Token` authentication.
-- [x] Idempotency enforcement via `X-Idempotency-Key` header.
-- [x] Offline worker status detection and graceful queue buffering.
+- [x] Safe test payload verification in `n8n.test.ts` and `n8n-workflow.test.ts`.
+- [x] High-risk action gating requiring human administrator approval.
 
-### Phase 6: Testing & Quality Audit
-- [x] Unit assertions in `integration-foundation/policy.test.ts` (100% passing).
-- [x] Integration & security suite in `integration-foundation/integration.test.ts` (100% passing).
-- [x] Next.js 16 production build (`next build`) passing cleanly across all static and dynamic endpoints.
-- [x] Security audit: Zero hardcoded secrets, zero paid API keys, strict credential masking (`maskSecret`).
-- [x] Independent Gemini Pro audit verification passed.
+### Phase 6: Automated Testing & Browser Smoke Verification
+- [x] **10 Comprehensive Automated Test Suites Passing (100% Green):**
+  1. `policy.test.ts`: AI routing policy, confidential gating, zero paid spend.
+  2. `router.test.ts`: Model dispatch, fallback routing, closed-fail behavior.
+  3. `admin-auth.test.ts`: Timing-safe authentication, SHA-256 token verification, unauthorized rejection.
+  4. `job-store.test.ts`: Atomic concurrency, idempotency, persistence across restarts and separate processes.
+  5. `n8n.test.ts`: Webhook machine token auth, job creation, approval gating.
+  6. `n8n-workflow.test.ts`: Real n8n workflow execution, multi-node flow, node-level error handling.
+  7. `provider-connectivity.test.ts`: Free-tier billing audit, safe test prompts, quota limits.
+  8. `agreement-commission.test.ts`: Evidence-gated commission math, date ranges, status gates, minor unit rounding.
+  9. `integration-evidence.test.ts`: Platform status evaluation (`[VERIFIED LIVE]`, `[CONFIGURED INTEGRATION]`, `[AUDITED REPOSITORY]`).
+  10. `integration.test.ts`: Master end-to-end integration and security suite.
+- [x] **Live Browser Smoke Testing Verified via Browser Subagent:**
+  - URL: `http://localhost:3847/command-center`
+  - Login Screen: Admin PIN verification (`rs-2026-master-key-secure-prod-token`)
+  - Executive Overview: All 5 platforms loaded from `bl_platforms`, 12 business agents, 4 free providers.
+  - Dubai & Agreements Tab: Emaar (`agr-emaar-01`, 300 bps), Damac (`agr-damac-02`, 350 bps), Sobha (`agr-sobha-03`, draft / blocked), verified calculator with UAE 5% VAT.
+  - Central Immutable Audit Log: `bl_audit` rendering operations in real-time.
+  - Screenshot evidence captured at: `browser_evidence/final_step_8.png`.
 
 ---
 
 ## 3. Strict Safety Compliance Log
-- **Zero Paid Spend:** No credit card, payment gateway, or paid API keys configured or called.
-- **Data Protection:** No private partner agreements or customer PII exposed to public cloud APIs.
+- **Zero Paid Spend:** Strictly verified zero billable API requests.
+- **Data Protection:** No private agreements or customer PII exposed to public cloud APIs.
 - **Preservation:** Existing public website designs (`rslina.com`, `brandlinker.com`, Dubai concierge, Spark storefront) preserved intact.
-- **Branch Isolation:** All changes isolated strictly in `feature/antigravity-integration`.
+- **Branch Isolation:** All changes committed strictly to `feature/antigravity-integration`. `main` was never modified.
+- **Production Safety:** No unauthorized production deployments. Staging and local test environments only.

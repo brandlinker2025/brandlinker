@@ -1,0 +1,16 @@
+create table public.bl_platforms (id text primary key, domain text not null unique);
+insert into public.bl_platforms values ('rslina','rslina.com'),('brandlinker','brandlinkerbd.com'),('brandlinker-dubai','brandlinkerdubai.com'),('brandlinker-spark','brandlinkerspark.com'),('brandlinker-studio','brandlinkerstudio.com');
+create table public.bl_jobs (id text primary key, platform_id text references public.bl_platforms(id), agent_id text not null, state text not null check(state in ('queued','running','awaiting_approval','succeeded','failed','cancelled')), revision integer not null default 0 check(revision>=0), idempotency_key text not null unique, created_at timestamptz not null default now(), updated_at timestamptz not null default now());
+create table public.bl_partners (id uuid primary key default gen_random_uuid(), name text not null, created_at timestamptz not null default now());
+create table public.bl_agreements (id uuid primary key default gen_random_uuid(), partner_id uuid not null references public.bl_partners(id), evidence_sha256 text, evidence_path text, commission_bps integer check(commission_bps between 0 and 10000), valid_from date, valid_until date, status text not null default 'draft' check(status in ('draft','approved','revoked')), approved_by uuid references auth.users(id), check(valid_until>=valid_from), check(status<>'approved' or (evidence_sha256 is not null and evidence_sha256 ~ '^[a-f0-9]{64}$' and evidence_path is not null and commission_bps is not null and valid_from is not null and valid_until is not null and approved_by is not null)));
+create table public.bl_leads (id uuid primary key default gen_random_uuid(), platform_id text not null references public.bl_platforms(id), name text not null, contact text, consent_at timestamptz, stage text not null default 'new', created_at timestamptz not null default now());
+create table public.bl_audit (id bigint generated always as identity primary key, actor_id uuid, action text not null, entity_id text, created_at timestamptz not null default now());
+alter table public.bl_platforms enable row level security;
+alter table public.bl_jobs enable row level security;
+alter table public.bl_partners enable row level security;
+alter table public.bl_agreements enable row level security;
+alter table public.bl_leads enable row level security;
+alter table public.bl_audit enable row level security;
+revoke all on public.bl_platforms,public.bl_jobs,public.bl_partners,public.bl_agreements,public.bl_leads,public.bl_audit from anon,authenticated;
+grant select,insert,update on public.bl_platforms,public.bl_jobs,public.bl_partners,public.bl_agreements,public.bl_leads to service_role;
+grant select,insert on public.bl_audit to service_role;
